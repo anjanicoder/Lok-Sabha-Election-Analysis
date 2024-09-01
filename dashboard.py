@@ -441,6 +441,7 @@ with col1:
     # Concatenate top parties with others
     final_data = pd.concat([top_parties, others_sum])
 
+   
     # Create a pie chart
     fig_pie = px.pie(
         final_data, 
@@ -448,6 +449,14 @@ with col1:
         values='Votes_Percentage', 
         title='Votes Percentage by Party',
         labels={'Party': 'Party', 'Votes_Percentage': 'Votes Percentage'}
+    )
+
+    # Ensure consistent display between hover and labels
+    fig_pie.update_traces(
+        textinfo='percent+label',  # Show percentage and label on the chart
+        hoverinfo='label+percent+value',  # Show label, percentage, and raw value on hover
+        textposition='outside',  # Position text outside for readability
+        texttemplate='%{label}: %{value:.2f}%'
     )
 
     # Update layout for better readability and display labels below
