@@ -155,7 +155,7 @@ with col1:
   
 
 with col2:
-    st.write("Gender Distribution")
+    st.write("Category Distribution")
     # state_turnout = df3.groupby('state')['turnout'].mean()
     # st.line_chart(state_turnout)
 
