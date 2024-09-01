@@ -50,7 +50,7 @@ gender_ratio = pd.read_csv('gender_rat.csv')
 
 # Sidebar filters
 st.sidebar.title("Filters")
-years = st.sidebar.multiselect("Select Year(s)", df3['election_year'].unique(), default=[1980,2014, 2019, 2024])
+years = st.sidebar.multiselect("Select Year(s)", df3['election_year'].unique(), default=[2024])
 states = st.sidebar.multiselect("Select State(s)", df3['state'].unique(), default=['Gujarat'])
 
 # Filter `pc_names` based on selected `states`
