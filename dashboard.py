@@ -14,6 +14,9 @@ import requests
 import plotly.graph_objects as go
 
 
+# Set Streamlit to wide mode by default
+st.set_page_config(layout="wide")
+
 
 # Database connection parameters
 username = 'root'
