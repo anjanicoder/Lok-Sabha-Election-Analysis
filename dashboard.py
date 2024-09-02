@@ -239,6 +239,7 @@ with col1:
     if not filtered_df1.empty:
         grouped_df1 = filtered_df1.groupby('pc_name')['votes_polled'].sum().reset_index()
         fig1 = px.bar(grouped_df1, x='pc_name', y='votes_polled', title='Votes Polled by constituency',height=500)
+        fig1.update_xaxes(title_text='Constituency')
         st.plotly_chart(fig1)
     
     # st.write("Votes Polled by Constituency")
