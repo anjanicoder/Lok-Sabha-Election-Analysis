@@ -18,6 +18,32 @@ import plotly.graph_objects as go
 st.set_page_config(layout="wide")
 
 
+# Inject custom CSS
+st.markdown(
+    """
+    <style>
+    /* Set the background color */
+    .stApp {
+        background-color: #050608;
+    }
+
+    /* Set text color and other styles */
+    .css-10trblm {
+        color: white;
+    }
+
+    /* Customize other elements if necessary */
+    .stButton button {
+        background-color: #1f1f1f;
+        color: white;
+        border: 1px solid #4CAF50;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+
 # Database connection parameters
 username = 'root'
 password = 'test'
