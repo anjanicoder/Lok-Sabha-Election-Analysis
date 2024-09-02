@@ -235,10 +235,10 @@ st.subheader("Constituency Overview")
 col1, col2 = st.columns([1, 1])
 
 with col1:
-    # st.write("Votes Polled by PC Name")
+    # st.write("Votes Polled by constituency")
     if not filtered_df1.empty:
         grouped_df1 = filtered_df1.groupby('pc_name')['votes_polled'].sum().reset_index()
-        fig1 = px.bar(grouped_df1, x='pc_name', y='votes_polled', title='Votes Polled by PC Name',height=500)
+        fig1 = px.bar(grouped_df1, x='pc_name', y='votes_polled', title='Votes Polled by constituency',height=500)
         st.plotly_chart(fig1)
     
     # st.write("Votes Polled by Constituency")
@@ -251,7 +251,7 @@ with col1:
 
     pc_trend = df1[df1['pc_name'].isin(pc_names)]
     pc_names =pc_trend['pc_name'].unique()
-    selected_pc_names = st.multiselect("Select PC Names", options=pc_names, default=pc_names[:2])
+    selected_pc_names = st.multiselect("Select constituency", options=pc_names, default=pc_names[:2])
 
     # Filter the DataFrame based on selected pc_name
     filtered_df = pc_trend[pc_trend['pc_name'].isin(selected_pc_names)]
@@ -262,11 +262,11 @@ with col1:
                 y='votes_polled_percentage', 
                 color='pc_name', 
                 markers=True, 
-                title='Trend in Votes Polled Percentage by PC Name Over the Years',
+                title='Trend in Votes Polled Percentage by constituency Over the Years',
                 height=500)
 
     # Update layout to make it look more appealing in Streamlit
-    fig.update_layout(legend_title_text='PC Name',
+    fig.update_layout(legend_title_text='constituency',
                     xaxis_title='Election Year',
                     yaxis_title='Votes Polled Percentage (%)',
                     plot_bgcolor='rgba(0,0,0,0)')  # Set transparent background
