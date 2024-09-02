@@ -128,30 +128,18 @@ with col1:
 
     # Group by party and count occurrences
     party_votes = filtered_df3['party'].value_counts()
-
+    
     # Sort by votes in descending order
     sorted_party_votes = party_votes.sort_values(ascending=False)
-
-    # Get the top 5 parties
+    
+    # Get the top 8 parties
     top_parties = sorted_party_votes.head(8)
-
-    # Calculate the votes for 'Others'
-    other_votes = sorted_party_votes.iloc[8:].sum()  # Start from index 5 for 'Others'
-
-    # Create a Series for 'Others'
-    others_series = pd.Series({'Others': other_votes})
-
-    # Concatenate top parties and 'Others'
-    final_party_votes = pd.concat([top_parties, others_series])
-
-    # Ensure final_party_votes is sorted in descending order
-    final_party_votes = final_party_votes.sort_values(ascending=False)
-
+    
     # Convert the index to a categorical type to preserve the order
-    final_party_votes.index = pd.CategoricalIndex(final_party_votes.index, categories=final_party_votes.index, ordered=True)
-
+    top_parties.index = pd.CategoricalIndex(top_parties.index, categories=top_parties.index, ordered=True)
+    
     # Plot the bar chart
-    st.bar_chart(final_party_votes)
+    st.bar_chart(top_parties)
   
 
 with col2:
@@ -328,8 +316,22 @@ with col2:
         "West Bengal": "West Bengal"  # Same in both
     }
 
-    agg_data = filtered_df3.groupby('state').size().reset_index(name='seats')
+# Load GeoJSON data from a URL
+    geojson_url = "https://gist.githubusercontent.com/jbrobst/56c13bbbf9d97d187fea01ca62ea5112/raw/e388c4cae20aa53cb5090210a42ebb9b765c0a36/india_states.geojson"
+    response = requests.get(geojson_url)
+    geojson_data = response.json()
 
+    # Extract the state names from the GeoJSON file
+    state_names_geojson = [feature['properties']['ST_NM'] for feature in geojson_data['features']]
+
+    # Create a dropdown for selecting a party
+    selected_party = st.selectbox('Select a Party:', filtered_df3['party'].unique())
+
+    # Filter the data for the selected party
+    filtered_data = filtered_df3[filtered_df3['party'] == selected_party]
+
+    # Group the filtered data by state and count the number of seats
+    agg_data = filtered_data.groupby('state')['party'].count().reset_index(name='seats')
 
     # Apply the mapping to the 'state' column
     agg_data['state'] = agg_data['state'].map(state_mapping)
@@ -337,25 +339,11 @@ with col2:
     # Handle any states that might not match by dropping null values
     agg_data = agg_data.dropna(subset=['state'])
 
-
-
-    # Load GeoJSON data from a URL
-    geojson_url = "https://gist.githubusercontent.com/jbrobst/56c13bbbf9d97d187fea01ca62ea5112/raw/e388c4cae20aa53cb5090210a42ebb9b765c0a36/india_states.geojson"
-    response = requests.get(geojson_url)
-    geojson_data = response.json()
-
-
-    # Extract and print the state names from the GeoJSON
-    state_names_geojson = [feature['properties']['ST_NM'] for feature in geojson_data['features']]
-    # print("States in GeoJSON:", state_names_geojson)
-
     # Ensure all states from GeoJSON are present in the data
     agg_data = pd.DataFrame({
         'state': state_names_geojson,
         'seats': [agg_data[agg_data['state'] == state]['seats'].sum() if state in agg_data['state'].values else 0 for state in state_names_geojson]
     })
-
-
 
     # Create the choropleth map
     fig = go.Figure(data=go.Choropleth(
@@ -367,35 +355,32 @@ with col2:
         autocolorscale=False,
         colorscale='Reds',  # Color scale for the dark theme
         marker_line_color='peachpuff',  # Outline color for states
-
         colorbar=dict(
-        title={'text': "Seats"},
-        thickness=15,
-        len=0.3,
-        bgcolor='rgba(0,0,0,0.6)',  # Dark background for the color bar
-        tick0=0,
-        dtick=5,  # Adjust based on your data range
-        xanchor='right',  # Anchor the colorbar to the right side
-        x=1.0,  # Position colorbar at the far right
-        yanchor='middle',  # Anchor the colorbar to the middle vertically
-        y=0.4,  # Position colorbar in the middle vertically
-        titlefont=dict(color='white'),  # Set color of the color bar title
-        tickfont=dict(color='white')    # Set color of the color bar ticks
-    )
+            title={'text': "Seats"},
+            thickness=15,
+            len=0.3,
+            bgcolor='rgba(0,0,0,0.6)',  # Dark background for the color bar
+            tick0=0,
+            dtick=5,  # Adjust based on your data range
+            xanchor='right',  # Anchor the colorbar to the right side
+            x=1.0,  # Position colorbar at the far right
+            yanchor='middle',  # Anchor the colorbar to the middle vertically
+            y=0.4,  # Position colorbar in the middle vertically
+            titlefont=dict(color='white'),  # Set color of the color bar title
+            tickfont=dict(color='white')    # Set color of the color bar ticks
+        )
     ))
 
     fig.update_geos(
         visible=False,
-        projection=dict(
-            type='mercator'
-        ),
+        projection=dict(type='mercator'),
         lonaxis={'range': [68, 98]},  # Longitude range for India
         lataxis={'range': [6, 38]}    # Latitude range for India
     )
 
     fig.update_layout(
         title=dict(
-            text="Seats by State in India",
+            text=f"Seats by State in India - of Party- {selected_party}",
             xanchor='center',
             x=0.5,
             yref='paper',
@@ -406,7 +391,9 @@ with col2:
         margin={'r': 0, 't': 30, 'l': 0, 'b': 0},
         height=1000,
         width=750,  # Adjust width as needed
-        template='plotly_dark'  # Apply dark theme
+        template='plotly_dark',  # Apply dark theme
+        paper_bgcolor='rgba(0,0,0,0)',  # Make the background transparent
+        plot_bgcolor='rgba(0,0,0,0)',   # Make the plot background transparent
     )
 
     # Display the map in Streamlit
@@ -444,8 +431,7 @@ with col1:
     # Concatenate top parties with others
     final_data = pd.concat([top_parties, others_sum])
 
-   
-    # Create a pie chart
+      # Create a pie chart
     fig_pie = px.pie(
         final_data, 
         names='Party', 
@@ -454,12 +440,12 @@ with col1:
         labels={'Party': 'Party', 'Votes_Percentage': 'Votes Percentage'}
     )
 
-    # Ensure consistent display between hover and labels
+    # Update traces to show percentage values inside the pie slices
     fig_pie.update_traces(
-        textinfo='percent+label',  # Show percentage and label on the chart
+        textinfo='percent',  # Show only percentage on the chart
         hoverinfo='label+percent+value',  # Show label, percentage, and raw value on hover
-        textposition='outside',  # Position text outside for readability
-        texttemplate='%{label}: %{value:.2f}%'
+        textposition='inside',  # Position text inside the pie slices
+        texttemplate='%{value:.2f}%'  # Display the percentage with two decimal places as it is
     )
 
     # Update layout for better readability and display labels below
