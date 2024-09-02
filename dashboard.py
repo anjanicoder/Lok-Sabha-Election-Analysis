@@ -128,7 +128,7 @@ col4.metric("Total Candidates", formatted_total_candidates)
 
 # Election Dashboard
 st.subheader("Election Overview")
-st.markdown("### Graphs")
+
 col1, col2, col3 = st.columns(3)
 with col1:
     st.write("Party-wise Votes")
@@ -136,6 +136,17 @@ with col1:
     # Group by party and count occurrences
     party_votes = filtered_df3['party'].value_counts()
 
+    # Sort by votes in descending order
+    sorted_party_votes = party_votes.sort_values(ascending=False)
+
+    # Get the top 8 parties
+    top_parties = sorted_party_votes.head(8)
+
+    # Convert the index to a categorical type to preserve the order
+    top_parties.index = pd.CategoricalIndex(top_parties.index, categories=top_parties.index, ordered=True)
+
+    # Plot the bar chart
+    st.bar_chart(top_parties)
 
 with col2:
     st.write("Category Distribution")
@@ -153,10 +164,11 @@ with col2:
     # Create the bar chart
     st.bar_chart(top_type_category)
 
-
 with col3:
     st.write("Male vs Female Turnout Ratio Over the Years")
 
+    # Sort the DataFrame by Year
+    gender_ratio = gender_ratio.sort_values('Year')
 
     # Create Plotly figure
     fig = go.Figure()
@@ -184,6 +196,10 @@ with col3:
     # Update layout
     fig.update_layout(
         xaxis_title='Year',
+        yaxis_title='Turnout (%)',
+        legend_title='Legend',
+        legend=dict(
+            orientation="h",  # Horizontal orientation for the legend
             yanchor="top",    # Anchor the legend to the top
             y=-0.2,           # Position the legend below the plot
             xanchor="center", # Center the legend horizontally
@@ -195,7 +211,9 @@ with col3:
 
     # Show the plot in Streamlit
     st.plotly_chart(fig)
-        
+    
+
+
 
 
 # Constituency Overview Metrics
