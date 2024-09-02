@@ -110,7 +110,7 @@ formatted_total_constituencies = format_number(total_constituencies)
 formatted_total_candidates = format_number(total_candidates)
 
 # Dashboard Layout
-st.title("Election Dashboard")
+st.markdown("<h1 style='text-align: center;'>Election Dashboard</h1>", unsafe_allow_html=True)
 
 # Election Metrics in a Single Row
 col1, col2, col3, col4 = st.columns(4)
@@ -121,8 +121,9 @@ col4.metric("Total Candidates", formatted_total_candidates)
 
 
 # Election Dashboard
-st.markdown("<h1 style='text-align: center;'>Election Dashboard</h1>", unsafe_allow_html=True)
-st.subheader("Lok Sabha Election Analysis")
+# st.markdown("<h1 style='text-align: center;'>Election Dashboard</h1>", unsafe_allow_html=True)
+# st.subheader("Lok Sabha Election Analysis")
+st.subheader("Election Overview")
 
 col1, col2, col3 = st.columns(3)
 with col1:
