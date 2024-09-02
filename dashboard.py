@@ -112,6 +112,8 @@ formatted_total_candidates = format_number(total_candidates)
 # Dashboard Layout
 st.markdown("<h1 style='text-align: center;'>Election Dashboard</h1>", unsafe_allow_html=True)
 
+
+
 # Election Metrics in a Single Row
 col1, col2, col3, col4 = st.columns(4)
 col1.metric("Total Votes", formatted_total_votes)
@@ -123,102 +125,74 @@ col4.metric("Total Candidates", formatted_total_candidates)
 # Election Dashboard
 # st.markdown("<h1 style='text-align: center;'>Election Dashboard</h1>", unsafe_allow_html=True)
 # st.subheader("Lok Sabha Election Analysis")
-st.subheader("Election Overview")
 
+# Election Dashboard
+st.subheader("Election Overview")
+st.markdown("### Graphs")
 col1, col2, col3 = st.columns(3)
 with col1:
-    st.write("Party-wise Seats")
+    st.write("Party-wise Votes")
 
     # Group by party and count occurrences
     party_votes = filtered_df3['party'].value_counts()
-    
-    # Sort by votes in descending order
-    sorted_party_votes = party_votes.sort_values(ascending=False)
-    
-    # Get the top 8 parties
-    top_parties = sorted_party_votes.head(8)
-    
-    # Convert the index to a categorical type to preserve the order
-    top_parties.index = pd.CategoricalIndex(top_parties.index, categories=top_parties.index, ordered=True)
-    
-    # Plot the bar chart
-    st.bar_chart(top_parties)
-  
+
 
 with col2:
     st.write("Category Distribution")
+    # state_turnout = df3.groupby('state')['turnout'].mean()
+    # st.line_chart(state_turnout)
 
-    # Get the top 3 type categories
+    # Get the top 5 type categories
     top_type_category = filtered_df3["type_category"].value_counts().head(3).reset_index()
     top_type_category.columns = ['Type Category', 'Count']
-    
-    # Create the bar chart using Plotly
-    fig = go.Figure(data=[go.Bar(
-        x=top_type_category['Type Category'],
-        y=top_type_category['Count'],
-        text=top_type_category['Count'],  # Add data labels
-        textposition='auto'  # Automatically positions the labels
-    )])
-    
-    # Update layout to make it more presentable
-    fig.update_layout(
-        xaxis_title='Type Category',
-        yaxis_title='Count',
-        template='plotly_white'
-    )
-    
-    # Show the plot in Streamlit
-    st.plotly_chart(fig)
+
+    # To use st.bar_chart, the DataFrame needs to be in a specific format
+    # Transpose the DataFrame so that 'Type Category' becomes index and 'Count' is used for plotting
+    top_type_category.set_index('Type Category', inplace=True)
+
+    # Create the bar chart
+    st.bar_chart(top_type_category)
+
 
 with col3:
     st.write("Male vs Female Turnout Ratio Over the Years")
 
-    # Sort the DataFrame by Year
-    gender_ratio = gender_ratio.sort_values('Year')
 
     # Create Plotly figure
     fig = go.Figure()
-    
-        # Add Female Turnout line
+
+    # Add Female Turnout line
     fig.add_trace(go.Scatter(
         x=gender_ratio['Year'],
         y=gender_ratio['Female_Turnout'],
-        mode='lines+markers+text',  # Add 'text' to show labels
+        mode='lines+markers',
         name='Female Turnout',
         line=dict(color='blue'),
-        marker=dict(symbol='circle'),
-        text=gender_ratio['Female_Turnout'],  # Labels for data points
-        textposition='top center'  # Position labels above the markers
+        marker=dict(symbol='circle')
     ))
-    
+
     # Add Male Turnout line
     fig.add_trace(go.Scatter(
         x=gender_ratio['Year'],
         y=gender_ratio['Male_Turnout'],
-        mode='lines+markers+text',  # Add 'text' to show labels
+        mode='lines+markers',
         name='Male Turnout',
         line=dict(color='red'),
-        marker=dict(symbol='square'),
-        text=gender_ratio['Male_Turnout'],  # Labels for data points
-        textposition='top center'  # Position labels above the markers
+        marker=dict(symbol='square')
     ))
-    
+
     # Update layout
     fig.update_layout(
         xaxis_title='Year',
-        yaxis_title='Turnout (%)',
-        legend_title='Legend',
-        legend=dict(
-            orientation="h",  # Horizontal orientation for the legend
             yanchor="top",    # Anchor the legend to the top
             y=-0.2,           # Position the legend below the plot
             xanchor="center", # Center the legend horizontally
-            x=0.5             # Center the legend horizontally
+            x=0.5            # Center the legend horizontally
         ),
         margin=dict(t=50, b=100, l=50, r=50),  # Adjust margins to provide space for the legend
         template='plotly_white'
     )
-    
+
     # Show the plot in Streamlit
     st.plotly_chart(fig)
         
