@@ -14,8 +14,36 @@ import requests
 import plotly.graph_objects as go
 
 
-# Set Streamlit to wide mode by default
-st.set_page_config(layout="wide")
+
+
+# # Set Streamlit to wide mode by default
+# st.set_page_config(layout="wide")
+
+# Set page configuration as the first Streamlit command
+st.set_page_config(
+    page_title="",
+    page_icon=":bar_chart:",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
+# Your other Streamlit code starts here
+st.markdown(
+    """
+    <style>
+    .gradient-text {
+        font-size: 3em;  /* Adjust this to make the text bigger */
+        background: -webkit-linear-gradient(left, #FF9933, #FFFFFF, #138808);
+        -webkit-background-clip: text;
+        color: transparent;
+        text-align: center;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+st.markdown("<h1 class='gradient-text'>Lok Sabha Election Analysis</h1><br><br>", unsafe_allow_html=True)
 
 
 
@@ -110,9 +138,25 @@ formatted_total_constituencies = format_number(total_constituencies)
 formatted_total_candidates = format_number(total_candidates)
 
 # Dashboard Layout
-st.markdown("<h1 style='text-align: center;'>Election Dashboard</h1>", unsafe_allow_html=True)
 
+# Add this near the top of your Streamlit script
+# st.markdown(
+#     """
+#     <style>
+#     .gradient-text {
+#         font-size: 3em;  /* Adjust this to make the text bigger */
+#         background: -webkit-linear-gradient(left, #FF9933, #FFFFFF, #138808);
+#         -webkit-background-clip: text;
+#         color: transparent;
+#         text-align: center;
+#     }
+#     </style>
+#     """,
+#     unsafe_allow_html=True
+# )
 
+# st.markdown("<h1 style='text-align: center;'>Lok Sabha Election Analysis</h1><br><br>", unsafe_allow_html=True)
+st.subheader("Election Metrics")
 
 # Election Metrics in a Single Row
 col1, col2, col3, col4 = st.columns(4)
@@ -127,11 +171,17 @@ col4.metric("Total Candidates", formatted_total_candidates)
 # st.subheader("Lok Sabha Election Analysis")
 
 # Election Dashboard
-st.subheader("Election Overview")
 
+
+st.markdown("<br><br>", unsafe_allow_html=True)
+st.subheader("Election Analysis")
+
+# Create three columns
 col1, col2, col3 = st.columns(3)
+
 with col1:
-    st.write("Party-wise Votes")
+    st.write("Top Parties with Seats Won")
+
 
     # Group by party and count occurrences
     party_votes = filtered_df3['party'].value_counts()
@@ -139,85 +189,125 @@ with col1:
     # Sort by votes in descending order
     sorted_party_votes = party_votes.sort_values(ascending=False)
 
-    # Get the top 8 parties
-    top_parties = sorted_party_votes.head(8)
+    # Get the top 6 parties
+    top_parties = sorted_party_votes.head(6)
 
     # Convert the index to a categorical type to preserve the order
     top_parties.index = pd.CategoricalIndex(top_parties.index, categories=top_parties.index, ordered=True)
 
-    # Plot the bar chart
-    st.bar_chart(top_parties)
+    # Convert to DataFrame for Plotly
+    top_parties_df = top_parties.reset_index()
+    top_parties_df.columns = ['Party', 'Votes']
+
+    # Create the bar chart using Plotly Express
+    fig = px.bar(top_parties_df, x='Party', y='Votes', text='Votes')
+
+    # Rotate the x-tick labels by -45 degrees
+    fig.update_layout(
+        xaxis_title='Party',
+        yaxis_title='Seats Count',
+        xaxis_tickangle=-45,        # Rotate the x-ticks
+        height=550,                  
+        yaxis=dict(range=[0, top_parties.max() * 1.2]),  # Set y-axis range slightly above the max value
+        template='plotly_white'
+    )
+
+    # Automatically position data labels outside the bars
+    fig.update_traces(textposition='outside')
+
+    # Display the plot in Streamlit
+    st.plotly_chart(fig)
 
 with col2:
-    st.write("Category Distribution")
-    # state_turnout = df3.groupby('state')['turnout'].mean()
-    # st.line_chart(state_turnout)
+    st.write("Candidates by Category")
 
-    # Get the top 5 type categories
+    # Get the top 3 type categories
     top_type_category = filtered_df3["type_category"].value_counts().head(3).reset_index()
     top_type_category.columns = ['Type Category', 'Count']
 
-    # To use st.bar_chart, the DataFrame needs to be in a specific format
-    # Transpose the DataFrame so that 'Type Category' becomes index and 'Count' is used for plotting
-    top_type_category.set_index('Type Category', inplace=True)
+    # Create the bar chart using Plotly Express
+    fig_category = px.bar(top_type_category, x='Type Category', y='Count', text='Count')
 
-    # Create the bar chart
-    st.bar_chart(top_type_category)
+    # Adjust layout to rotate x-ticks and increase the bar height
+    fig_category.update_layout(
+        xaxis_title='Type Category',
+        yaxis_title='Number of Candidates',
+        xaxis_tickangle=-45,         # Rotate the x-ticks by -45 degrees
+        yaxis=dict(range=[0, top_type_category['Count'].max() * 1.1]),  # Slightly above max value
+        height=480,                  # Set a custom height for the chart
+        template='plotly_white'
+    )
 
+    # Position data labels outside the bars
+    fig_category.update_traces(textposition='outside')
+
+    # Display the plot in Streamlit
+    st.plotly_chart(fig_category)
+
+# Plotting the Male vs Female Turnout Ratio Over the Years
 with col3:
-    st.write("Male vs Female Turnout Ratio Over the Years")
+    st.write("Genderwise Voter Turnout")
 
     # Sort the DataFrame by Year
     gender_ratio = gender_ratio.sort_values('Year')
 
     # Create Plotly figure
-    fig = go.Figure()
+    fig_turnout = go.Figure()
 
-    # Add Female Turnout line
-    fig.add_trace(go.Scatter(
+    # Add Female Turnout line (labels below the line)
+    fig_turnout.add_trace(go.Scatter(
         x=gender_ratio['Year'],
         y=gender_ratio['Female_Turnout'],
-        mode='lines+markers',
+        mode='lines+markers+text',
         name='Female Turnout',
-        line=dict(color='blue'),
-        marker=dict(symbol='circle')
+        line=dict(color='red'),
+        marker=dict(symbol='circle'),
+        text=gender_ratio['Female_Turnout'],   # Add data labels
+        textposition="bottom center"           # Position labels below the markers
     ))
 
-    # Add Male Turnout line
-    fig.add_trace(go.Scatter(
+    # Add Male Turnout line (labels above the line)
+    fig_turnout.add_trace(go.Scatter(
         x=gender_ratio['Year'],
         y=gender_ratio['Male_Turnout'],
-        mode='lines+markers',
+        mode='lines+markers+text',
         name='Male Turnout',
-        line=dict(color='red'),
-        marker=dict(symbol='square')
+        line=dict(color='blue'),
+        marker=dict(symbol='square'),
+        text=gender_ratio['Male_Turnout'],    # Add data labels
+        textposition="top center"             # Position labels above the markers
     ))
 
+    # Calculate min and max values
+    min_y = min(gender_ratio[['Female_Turnout', 'Male_Turnout']].min() -2)
+    max_y = max(gender_ratio[['Female_Turnout', 'Male_Turnout']].max())
+
     # Update layout
-    fig.update_layout(
+    fig_turnout.update_layout(
         xaxis_title='Year',
         yaxis_title='Turnout (%)',
+        yaxis=dict(
+            range=[min_y, max_y + (max_y - min_y) * 0.1]  # Set lower limit to min_y and upper limit slightly beyond max_y
+        ),
         legend_title='Legend',
         legend=dict(
             orientation="h",  # Horizontal orientation for the legend
             yanchor="top",    # Anchor the legend to the top
             y=-0.2,           # Position the legend below the plot
             xanchor="center", # Center the legend horizontally
-            x=0.5            # Center the legend horizontally
+            x=0.5             # Center the legend horizontally
         ),
         margin=dict(t=50, b=100, l=50, r=50),  # Adjust margins to provide space for the legend
-        template='plotly_white'
+        template='plotly_white',
+        height=500
     )
 
     # Show the plot in Streamlit
-    st.plotly_chart(fig)
-    
-
-
-
+    st.plotly_chart(fig_turnout)
 
 # Constituency Overview Metrics
-st.subheader("Constituency Overview Metrics")
+st.markdown("<br><br>", unsafe_allow_html=True)
+st.subheader("Constituency Metrics")
 col1, col2, col3, col4 = st.columns(4)
 
 # Total votes polled
@@ -237,7 +327,8 @@ total_female_electors = filtered_df1['female_electors'].sum()
 col4.metric("Total Female Electors", format_number(total_female_electors))
 
 # Constituency Overview Graphs and Map
-st.subheader("Constituency Overview")
+st.markdown("<br><br>", unsafe_allow_html=True)
+st.subheader("Constituency Analysis")
 
 # Layout with two columns
 col1, col2 = st.columns([1, 1])
@@ -271,14 +362,24 @@ with col1:
                 y='votes_polled_percentage', 
                 color='pc_name', 
                 markers=True, 
-                title='Trend in Votes Polled Percentage by constituency Over the Years',
+                title='Trend in Votes Polled by constituency',
+                text='votes_polled_percentage',
                 height=500)
 
     # Update layout to make it look more appealing in Streamlit
     fig.update_layout(legend_title_text='constituency',
                     xaxis_title='Election Year',
                     yaxis_title='Votes Polled Percentage (%)',
-                    plot_bgcolor='rgba(0,0,0,0)')  # Set transparent background
+                    plot_bgcolor='rgba(0,0,0,0)',
+                    xaxis=dict(
+                        title_font=dict(size=18)  # Increase the font size of the x-axis title
+                    ),
+                    yaxis=dict(
+                        title_font=dict(size=18)  # Increase the font size of the y-axis title
+                    ))  # Set transparent background
+    
+    # Update the text position to show labels above the markers
+    fig.update_traces(textposition='top center')  # Position labels above the line
 
     # Display the plot in Streamlit
     st.plotly_chart(fig, use_container_width=True)
@@ -389,7 +490,7 @@ with col2:
 
     fig.update_layout(
         title=dict(
-            text=f"Seats by State in India - of Party- {selected_party}",
+            text=f"{selected_party} Seats In Lok Sabha Election",
             xanchor='center',
             x=0.5,
             yref='paper',
@@ -413,16 +514,21 @@ with col2:
 
 
 # Candidates Dashboard
-st.subheader("Candidates Overview")
+st.subheader("Party by Constituency")
 
 col1, col2 = st.columns(2)
-
 with col1:
-#     st.dataframe(filtered_df2)
+    constituency = st.selectbox(
+        'Select Constituency:', 
+        filtered_df2['pc_name'].unique(),
+        key='selectbox_col1'  # Unique key for the selectbox in col1
+    )
 
-        
+    # Filter the dataframe based on the selected constituency
+    party_wise = filtered_df2[filtered_df2['pc_name'] == constituency]
+
     # Group by 'Party' and calculate the average 'Votes_Percentage'
-    party_votes_pct = filtered_df2.groupby('Party')['Votes_Percentage'].mean().reset_index()
+    party_votes_pct = party_wise.groupby('Party')['Votes_Percentage'].mean().reset_index()
 
     # Sort by Votes Percentage in descending order
     party_votes_pct = party_votes_pct.sort_values(by='Votes_Percentage', ascending=False)
@@ -430,6 +536,7 @@ with col1:
     # Separate the top 3 parties and the rest
     top_parties = party_votes_pct.head(3)
     others = party_votes_pct.iloc[3:]
+
 
     # Combine others into a single row
     others_sum = pd.DataFrame({
@@ -440,7 +547,7 @@ with col1:
     # Concatenate top parties with others
     final_data = pd.concat([top_parties, others_sum])
 
-      # Create a pie chart
+    # Create a pie chart
     fig_pie = px.pie(
         final_data, 
         names='Party', 
@@ -470,12 +577,16 @@ with col1:
 
 
 with col2:
-    constituency = st.selectbox('Select Constituency:', filtered_df2['pc_name'].unique())
+    constituency = st.selectbox(
+        'Select Constituency:', 
+        filtered_df2['pc_name'].unique(),
+        key='selectbox_col2'  # Unique key for the selectbox in col2
+    )
 
     # Filter the dataframe based on the selected constituency
     df = filtered_df2[filtered_df2['pc_name'] == constituency]
 
-        # Create a treemap with a peach color palette
+    # Create a treemap with a peach color palette
     fig = px.treemap(
         df,
         path=['position', 'Candidate_Name'],
@@ -490,7 +601,7 @@ with col2:
     fig.update_layout(
         plot_bgcolor='rgba(0,0,0,0)',  # Transparent background
         paper_bgcolor='rgba(0,0,0,0)',  # Transparent background
-        title_font=dict(size=28, color='white', family="Arial"),  # Bigger title font, white color
+        title_font=dict(size=24, color='white', family="Arial"),  # Bigger title font, white color
         font=dict(color='black', size=22, family="Arial"),  # Bigger font, black color
         margin=dict(l=10, r=10, t=70, b=150),  # Adjust margins to give more space to the treemap
         coloraxis_colorbar=dict(
@@ -522,5 +633,4 @@ st.markdown("---")
 
 # Provide additional information and credits
 st.sidebar.info("Data sourced from provided datasets.")
-
 
