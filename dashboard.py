@@ -14,8 +14,13 @@ from streamlit_folium import st_folium
 import requests
 import plotly.graph_objects as go
 
-
-
+from pandasai.llm import GoogleGemini
+import streamlit as st
+import os
+import pandas as pd
+from pandasai import SmartDataframe
+from pandasai.responses.response_parser import  ResponseParser
+import google.generativeai as genai
 
 # # Set Streamlit to wide mode by default
 # st.set_page_config(layout="wide")
@@ -47,6 +52,36 @@ st.markdown(
 st.markdown("<h1 class='gradient-text'>Lok Sabha Election Analysis</h1><br><br>", unsafe_allow_html=True)
 
 
+gemini_api_key = "AIzaSyAzu18m94PyGkzUFyn2wLv0Rfhm6FKLH4E"
+
+
+st.write("# AI Data Analyst")
+st.write("##### Engage in insightful conversations with your data through powerful visualizations, empowering you to uncover valuable insights and make informed decisions effortlessly!")
+with st.sidebar:
+        st.title("AI Data Analyst")
+        st.write("Engage in insightful conversations with your data through powerful visualizations, empowering you to uncover valuable insights and make informed decisions effortlessly!")
+        # Added a divider
+        st.divider()
+        # Add content to the sidebar/drawer
+        with st.expander("Data Visualization"):
+            st.write("Made with Gemini pro and pandas ai.")
+        st.write("<div>Developed by - <span style=\"color: cyan; font-size: 24px; font-weight: 600;\">Anjani Nandan</span></div>",unsafe_allow_html=True)
+
+st.markdown("<br><br>", unsafe_allow_html=True)
+
+
+user_input = st.text_input("Ask Queries related to graph 1",placeholder="Ask me about your data")
+if user_input:
+    answer = generateResponse(dataFrame=top_parties_df,prompt=user_input)
+    st.write(answer)
+
+# try:
+user_input = st.text_input("Ask Queries related to graph 3",placeholder="Write question here")
+    
+if user_input:
+    answer = generateResponse(dataFrame=gender_ratio, prompt=user_input)
+    st.write(answer)
+        
 
 # Database connection parameters
 username = 'root'
@@ -634,4 +669,5 @@ st.markdown("---")
 
 # Provide additional information and credits
 st.sidebar.info("Data sourced from provided datasets.")
+
 

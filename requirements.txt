@@ -48,7 +48,7 @@ nbclient==0.10.0
 nbconvert==7.16.4
 nbformat==5.10.4
 nest-asyncio==1.6.0
-numpy==2.1.0
+numpy==1.24.0
 packaging==24.1
 pandas==2.2.2
 pandocfilters==1.5.1
@@ -58,7 +58,7 @@ pickleshare==0.7.5
 pillow==10.4.0
 pipreqs==0.5.0
 platformdirs==4.2.2
-plotly==5.24.0
+plotly==5.0
 prompt_toolkit==3.0.47
 protobuf==5.28.0
 psutil==6.0.0
