@@ -1,4 +1,3 @@
-
 import streamlit as st
 import matplotlib.pyplot as plt
 import plotly.express as px
@@ -634,4 +633,3 @@ st.markdown("---")
 
 # Provide additional information and credits
 st.sidebar.info("Data sourced from provided datasets.")
-
