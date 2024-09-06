@@ -427,8 +427,12 @@ def analyzeTrends(dataFrame, input_query):
         return f"I can't answer that question. Error: {e}"
 
 
-# URL of the image on GitHub
-teacher_image_url = "https://raw.githubusercontent.com/anjanicoder/Lok-Sabha-Election-Analysis/master/teacher2.png"
+# Load and encode the image (teacher2.png) as base64
+def get_image_as_base64(image_path):
+    with open(image_path, "rb") as image_file:
+        return base64.b64encode(image_file.read()).decode()
+
+teacher_image_base64 = get_image_as_base64("teacher2.png")
 
 # Streamlit input boxes and image buttons
 st.title("Ask From AI")
@@ -440,7 +444,7 @@ with col1:
     input1 = st.text_input("Ask Queries related to graph 1 ✨", placeholder="Ask me about your data")
     # Display the teacher image as a clickable button
     st.markdown(
-        """
+        f"""
         <style>
         .teacher-button {{
             cursor: pointer;
@@ -454,14 +458,13 @@ with col1:
         }}
         </style>
         <div class="teacher-button" onclick="document.getElementById('analyze-button-1').click()">
-            <img src="{teacher_image_url}" class="teacher-image" alt="Click to analyze trends">
+            <img src="data:image/png;base64,{teacher_image_base64}" class="teacher-image" alt="Click to analyze trends">
         </div>
         """,
         unsafe_allow_html=True
     )
     # Handle Enter key press for generating responses
     if input1:
-        # Generate the dataframe-related response
         initial_response = generateDataframeResponse(dataFrame=top_parties_df, prompt=input1)
         st.write(initial_response)
     
@@ -477,7 +480,7 @@ with col2:
     input2 = st.text_input("Ask Queries related to graph 3 ✨", placeholder="Write question here")
     # Display the teacher image as a clickable button
     st.markdown(
-        """
+        f"""
         <style>
         .teacher-button {{
             cursor: pointer;
@@ -491,14 +494,12 @@ with col2:
         }}
         </style>
         <div class="teacher-button" onclick="document.getElementById('analyze-button-2').click()">
-            <img src="{teacher_image_url}" class="teacher-image" alt="Click to analyze trends">
+            <img src="data:image/png;base64,{teacher_image_base64}" class="teacher-image" alt="Click to analyze trends">
         </div>
         """,
         unsafe_allow_html=True
     )
-    # Handle Enter key press for generating responses
     if input2:
-        # Generate the general response
         answer = generateResponse(dataFrame=gender_ratio, prompt=input2)
         st.write(answer)
 
