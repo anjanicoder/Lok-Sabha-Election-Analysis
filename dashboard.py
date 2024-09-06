@@ -429,7 +429,7 @@ with col1:
     input1 = st.text_input("Ask Queries related to graph 1 ✨", placeholder="Ask me about your data")
     # Display the teacher image as a clickable button
     st.markdown(
-        f"""
+        """
         <style>
         .teacher-button {{
             cursor: pointer;
@@ -462,12 +462,11 @@ with col1:
         else:
             st.write("Please ask a query related to the data.")
 
-
 with col2:
     input2 = st.text_input("Ask Queries related to graph 3 ✨", placeholder="Write question here")
     # Display the teacher image as a clickable button
     st.markdown(
-        f"""
+        """
         <style>
         .teacher-button {{
             cursor: pointer;
@@ -482,9 +481,11 @@ with col2:
         </style>
         <div class="teacher-button" onclick="document.getElementById('analyze-button-2').click()">
             <img src="{teacher_image_url}" class="teacher-image" alt="Click to analyze trends">
-        </div>""",
-        unsafe_allow_html=True)
-# Handle Enter key press for generating responses
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+    # Handle Enter key press for generating responses
     if input2:
         # Generate the general response
         answer = generateResponse(dataFrame=gender_ratio, prompt=input2)
@@ -497,8 +498,6 @@ with col2:
             st.write(trend_analysis)
         else:
             st.write("Please ask a query related to the data.")
-
-
 
 
 # Constituency Overview Metrics
