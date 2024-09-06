@@ -1,8 +1,6 @@
-
 import streamlit as st
 import matplotlib.pyplot as plt
 import plotly.express as px
-import pandas as pd
 import sqlalchemy
 import plotly.graph_objects as go
 import seaborn as sns
@@ -21,6 +19,8 @@ import pandas as pd
 from pandasai import SmartDataframe
 from pandasai.responses.response_parser import  ResponseParser
 import google.generativeai as genai
+
+
 
 # # Set Streamlit to wide mode by default
 # st.set_page_config(layout="wide")
@@ -52,11 +52,31 @@ st.markdown(
 st.markdown("<h1 class='gradient-text'>Lok Sabha Election Analysis</h1><br><br>", unsafe_allow_html=True)
 
 
-gemini_api_key = "AIzaSyAzu18m94PyGkzUFyn2wLv0Rfhm6FKLH4E"
 
 
-st.write("# AI Data Analyst")
-st.write("##### Engage in insightful conversations with your data through powerful visualizations, empowering you to uncover valuable insights and make informed decisions effortlessly!")
+class StreamLitResponse(ResponseParser):
+        def __init__(self,context) -> None:
+              super().__init__(context)
+        def format_dataframe(self,result):
+               st.dataframe(result['value'])
+               return
+        def format_plot(self,result):
+               st.image(result['value'])
+               return
+        def format_other(self, result):
+               st.write(result['value'])
+               return
+
+gemini_api_key = "AIzaSyAoH_9XUjI3qOpKGsOjZ4mqe6UwL2uak6c"
+
+def generateResponse(dataFrame,prompt):
+        llm = GoogleGemini(api_key=gemini_api_key)
+        pandas_agent = SmartDataframe(dataFrame,config={"llm":llm, "response_parser":StreamLitResponse})
+        answer = pandas_agent.chat(prompt)
+        return answer
+
+# st.write("# AI Data Analyst")
+# st.write("##### Engage in insightful conversations with your data through powerful visualizations, empowering you to uncover valuable insights and make informed decisions effortlessly!")
 with st.sidebar:
         st.title("AI Data Analyst")
         st.write("Engage in insightful conversations with your data through powerful visualizations, empowering you to uncover valuable insights and make informed decisions effortlessly!")
@@ -67,21 +87,25 @@ with st.sidebar:
             st.write("Made with Gemini pro and pandas ai.")
         st.write("<div>Developed by - <span style=\"color: cyan; font-size: 24px; font-weight: 600;\">Anjani Nandan</span></div>",unsafe_allow_html=True)
 
-st.markdown("<br><br>", unsafe_allow_html=True)
+
+# uploaded_file = st.file_uploader("Upload your dataset here (CSV)",type="csv")
+# if uploaded_file is not None:
+#         # Read the CSV file
+#         df = pd.read_csv(uploaded_file)
+
+#         # Display the data
+#         with st.expander("Preview"):
+#             st.write(df.head())
+
+#         # Plot the data
+#         user_input = st.text_input("Type your message here",placeholder="Ask me about your data")
+#         if user_input:
+#                 answer = generateResponse(dataFrame=df,prompt=user_input)
+#                 st.write(answer)
 
 
-user_input = st.text_input("Ask Queries related to graph 1",placeholder="Ask me about your data")
-if user_input:
-    answer = generateResponse(dataFrame=top_parties_df,prompt=user_input)
-    st.write(answer)
 
-# try:
-user_input = st.text_input("Ask Queries related to graph 3",placeholder="Write question here")
-    
-if user_input:
-    answer = generateResponse(dataFrame=gender_ratio, prompt=user_input)
-    st.write(answer)
-        
+
 
 # Database connection parameters
 username = 'root'
@@ -114,6 +138,8 @@ query = "SELECT * FROM election"
 df3 = pd.read_csv('Election.csv')
 
 gender_ratio = pd.read_csv('gender_rat.csv')
+
+
 
 
 # Sidebar filters
@@ -175,24 +201,9 @@ formatted_total_candidates = format_number(total_candidates)
 
 # Dashboard Layout
 
-# Add this near the top of your Streamlit script
-# st.markdown(
-#     """
-#     <style>
-#     .gradient-text {
-#         font-size: 3em;  /* Adjust this to make the text bigger */
-#         background: -webkit-linear-gradient(left, #FF9933, #FFFFFF, #138808);
-#         -webkit-background-clip: text;
-#         color: transparent;
-#         text-align: center;
-#     }
-#     </style>
-#     """,
-#     unsafe_allow_html=True
-# )
 
 # st.markdown("<h1 style='text-align: center;'>Lok Sabha Election Analysis</h1><br><br>", unsafe_allow_html=True)
-st.subheader("Election Metrics")
+st.subheader("Election Metrics 🗳️")
 
 # Election Metrics in a Single Row
 col1, col2, col3, col4 = st.columns(4)
@@ -341,6 +352,81 @@ with col3:
     # Show the plot in Streamlit
     st.plotly_chart(fig_turnout)
 
+
+st.markdown("<br><br>", unsafe_allow_html=True)
+
+# User input for asking queries related to graph 1
+input1 = st.text_input("Ask Queries related to graph 1 ✨", placeholder="Ask me about your data")
+answer = ""
+answer = generateResponse(dataFrame=top_parties_df, prompt=input1)
+st.write(answer)
+# Display the magic button to reveal insights
+if st.button("🔮 Reveal Insights"):
+    if input1:
+        # Generate response based on the user query and dataframe
+        
+
+        # Convert the dataframe to a string for model analysis
+        summary = top_parties_df.to_string()
+
+        # Configure the Gemini model
+        genai.configure(api_key=gemini_api_key)
+        model = genai.GenerativeModel('gemini-1.5-pro')
+
+        # Construct the prompt with the dataframe summary
+        response = model.generate_content(
+        f"Role: Act as an informed analyst.\n"
+        f"Task: Given the question '{input1}', provide a reasoned explanation based on general knowledge and relevant context related to Lok sabha Election of india {years}\n"
+        f"Additional Context: The data pertains to Lok Sabha elections in India. You don’t need to rely heavily on the specific dataframe but try to first read fromn it {summary}provided but should give a thoughtful response considering the typical factors involved in such elections.\n"
+        f"Break down the response into: \n"
+        f"- State-wise analysis\n"
+        f"- Party-wise analysis\n"
+        f"Avoid including irrelevant technical details and focus on what would be meaningful and understandable to a general audience."
+        )
+
+
+        # Display the Gemini model's response
+        st.write(response.text)
+    else:
+        st.write("Please ask a query related to the data.")
+
+
+
+# try:
+input2 = st.text_input("Ask Queries related to graph 3 ✨",placeholder="Write question here")
+answer = generateResponse(dataFrame=gender_ratio, prompt=input2)
+st.write(answer)
+# Button with a generic symbol (emoji) 
+if st.button('🔮 Analyze Trends', help='Click to analyze trends'):
+    try:
+        # Placeholder for generic symbol
+
+        summary = gender_ratio.describe().to_string()
+        # Check if the response is a string or a plot
+       
+        # Configure the model
+        model = genai.GenerativeModel('gemini-1.5-pro')
+
+        # Construct the prompt, passing the summarized dataframe
+        response = model.generate_content(
+            f"Role: Act as a Media Reporter.\n"
+            f"Task: Analyze the trend in the following data and explain the possible real-world reasons behind these trends based on Indian election history:\n\n"
+            f"{summary} and try to answer according to user requiremnt question :{input2}\n\n"
+            f"Provide insights that consider typical patterns and historical context. Break down your explanation into:\n"
+            f"- Analyze the dataframe and tell the reason\n"
+            f"- Try to give reason on real life scenario of india\n"
+            f"Avoid including irrelevant technical details and focus on practical explanations that are understandable to a general audience."
+        )
+            
+        st.write(response.text)
+    except Exception as e:
+        st.write("I can't answer that question")
+        st.write(f"Error: {e}")
+
+
+
+
+
 # Constituency Overview Metrics
 st.markdown("<br><br>", unsafe_allow_html=True)
 st.subheader("Constituency Metrics")
@@ -348,7 +434,7 @@ col1, col2, col3, col4 = st.columns(4)
 
 # Total votes polled
 total_votes_polled = filtered_df1['votes_polled'].sum()
-col1.metric("Total Votes Polled", format_number(total_votes_polled))
+col1.metric("Total Votes Polled 📦", format_number(total_votes_polled))
 
 # Number of constituencies
 total_constituencies = filtered_df1['pc_name'].nunique()
@@ -360,7 +446,7 @@ col3.metric("Total Male Electors", format_number(total_male_electors))
 
 # Total female electors
 total_female_electors = filtered_df1['female_electors'].sum()
-col4.metric("Total Female Electors", format_number(total_female_electors))
+col4.metric("Total Female Electors 🙎‍♀️", format_number(total_female_electors)," ")
 
 # Constituency Overview Graphs and Map
 st.markdown("<br><br>", unsafe_allow_html=True)
@@ -491,6 +577,8 @@ with col2:
         'seats': [agg_data[agg_data['state'] == state]['seats'].sum() if state in agg_data['state'].values else 0 for state in state_names_geojson]
     })
 
+   
+
     # Create the choropleth map
     fig = go.Figure(data=go.Choropleth(
         geojson=geojson_data,
@@ -535,15 +623,21 @@ with col2:
             pad={'b': 10}
         ),
         margin={'r': 0, 't': 30, 'l': 0, 'b': 0},
-        height=1000,
+        height=750,
         width=750,  # Adjust width as needed
         template='plotly_dark',  # Apply dark theme
         paper_bgcolor='rgba(0,0,0,0)',  # Make the background transparent
         plot_bgcolor='rgba(0,0,0,0)',   # Make the plot background transparent
+        
     )
 
     # Display the map in Streamlit
     st.plotly_chart(fig, use_container_width=True)
+
+    input2 = st.text_input("Ask Queries related to map", placeholder="Provide additional details", key="2nd")
+    if input2:
+        answer = generateResponse(dataFrame=agg_data,prompt=input2)
+        st.write(answer)
 
 
 
@@ -553,11 +647,13 @@ with col2:
 st.subheader("Party by Constituency")
 
 col1, col2 = st.columns(2)
+
 with col1:
     constituency = st.selectbox(
         'Select Constituency:', 
         filtered_df2['pc_name'].unique(),
-        key='selectbox_col1'  # Unique key for the selectbox in col1
+        index=0,  # Automatically select the first option
+        key='selectbox_col1'
     )
 
     # Filter the dataframe based on the selected constituency
@@ -572,7 +668,6 @@ with col1:
     # Separate the top 3 parties and the rest
     top_parties = party_votes_pct.head(3)
     others = party_votes_pct.iloc[3:]
-
 
     # Combine others into a single row
     others_sum = pd.DataFrame({
@@ -594,29 +689,29 @@ with col1:
 
     # Update traces to show percentage values inside the pie slices
     fig_pie.update_traces(
-        textinfo='percent',  # Show only percentage on the chart
-        hoverinfo='label+percent+value',  # Show label, percentage, and raw value on hover
-        textposition='inside',  # Position text inside the pie slices
-        texttemplate='%{value:.2f}%'  # Display the percentage with two decimal places as it is
+        textinfo='percent',
+        hoverinfo='label+percent+value',
+        textposition='inside',
+        texttemplate='%{value:.2f}%'
     )
 
-    # Update layout for better readability and display labels below
+    # Update layout for better readability
     fig_pie.update_layout(
         title='Votes Percentage by Party',
         legend_title='Party',
-        margin=dict(t=50, b=0, l=0, r=0),  # Adjust margins for better fit
-        legend=dict(orientation="h", yanchor="bottom", y=-0.2)  # Place legend below
+        margin=dict(t=50, b=0, l=0, r=0),
+        legend=dict(orientation="h", yanchor="bottom", y=-0.2)
     )
 
     # Display the pie chart in Streamlit
     st.plotly_chart(fig_pie)
 
-
 with col2:
     constituency = st.selectbox(
         'Select Constituency:', 
         filtered_df2['pc_name'].unique(),
-        key='selectbox_col2'  # Unique key for the selectbox in col2
+        index=0,  # Automatically select the first option
+        key='selectbox_col2'
     )
 
     # Filter the dataframe based on the selected constituency
@@ -628,36 +723,36 @@ with col2:
         path=['position', 'Candidate_Name'],
         values='Votes',
         color='Votes',
-        color_continuous_scale=[[0, '#FFE5B4'], [1, '#FF6347']],  # Peach to tomato gradient
+        color_continuous_scale=[[0, '#FFE5B4'], [1, '#FF6347']],
         hover_data={'Votes': True},
         title=f'Votes Distribution by Position for {constituency}'
     )
 
     # Customize the treemap layout
     fig.update_layout(
-        plot_bgcolor='rgba(0,0,0,0)',  # Transparent background
-        paper_bgcolor='rgba(0,0,0,0)',  # Transparent background
-        title_font=dict(size=24, color='white', family="Arial"),  # Bigger title font, white color
-        font=dict(color='black', size=22, family="Arial"),  # Bigger font, black color
-        margin=dict(l=10, r=10, t=70, b=150),  # Adjust margins to give more space to the treemap
+        plot_bgcolor='rgba(0,0,0,0)',
+        paper_bgcolor='rgba(0,0,0,0)',
+        title_font=dict(size=24, color='white', family="Arial"),
+        font=dict(color='black', size=22, family="Arial"),
+        margin=dict(l=10, r=10, t=70, b=150),
         coloraxis_colorbar=dict(
-            orientation="h",  # Horizontal color bar (legend)
+            orientation="h",
             yanchor="top",
-            y=-0.3,  # Position below the treemap
+            y=-0.3,
             xanchor="center",
             x=0.5,
-            tickfont=dict(color='white', size=16),  # Font size and color for ticks
-            title=dict(text="Votes", side="bottom", font=dict(size=18, color="black"))  # Title below the color bar
+            tickfont=dict(color='white', size=16),
+            title=dict(text="Votes", side="bottom", font=dict(size=18, color="black"))
         )
     )
 
     # Show labels inside the blocks with a better size
     fig.update_traces(
-        textinfo="label+value",  # Show labels and values inside the blocks
-        textfont=dict(size=20, color='black'),  # Larger font size for labels, black color
+        textinfo="label+value",
+        textfont=dict(size=20, color='black'),
         marker=dict(
-            line=dict(color='rgba(0,0,0,0)', width=0),  # Ensure no border color
-            pad=dict(t=0, l=0, r=0, b=0)  # Increase padding for wider space
+            line=dict(color='rgba(0,0,0,0)', width=0),
+            pad=dict(t=0, l=0, r=0, b=0)
         )
     )
 
@@ -669,5 +764,3 @@ st.markdown("---")
 
 # Provide additional information and credits
 st.sidebar.info("Data sourced from provided datasets.")
-
-
