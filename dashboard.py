@@ -452,7 +452,7 @@ with col1:
             display: inline-block;
             margin: 0px;
             position: relative;
-            left: -30px;  /* Move the button 5px to the right */
+            left: -25px;  /* Move the button 5px to the right */
         }}
         .teacher-image {{
             width: 150px;
@@ -490,7 +490,7 @@ with col2:
             display: inline-block;
             margin: 0px;
             position: relative;
-            left: -30px;  /* Move the button 5px to the right */
+            left: -25px;  /* Move the button 5px to the right */
         }}
         .teacher-image {{
             width: 150px;
