@@ -52,26 +52,26 @@ st.markdown("<h1 class='gradient-text'>Lok Sabha Election Analysis</h1><br><br>"
 
 
 
-class StreamLitResponse(ResponseParser):
-        def __init__(self,context) -> None:
-              super().__init__(context)
-        def format_dataframe(self,result):
-               st.dataframe(result['value'])
-               return
-        def format_plot(self,result):
-               st.image(result['value'])
-               return
-        def format_other(self, result):
-               st.write(result['value'])
-               return
+# class StreamLitResponse(ResponseParser):
+#         def __init__(self,context) -> None:
+#               super().__init__(context)
+#         def format_dataframe(self,result):
+#                st.dataframe(result['value'])
+#                return
+#         def format_plot(self,result):
+#                st.image(result['value'])
+#                return
+#         def format_other(self, result):
+#                st.write(result['value'])
+#                return
 
 gemini_api_key = "AIzaSyAoH_9XUjI3qOpKGsOjZ4mqe6UwL2uak6c"
 
-def generateResponse(dataFrame,prompt):
-        llm = GoogleGemini(api_key=gemini_api_key)
-        pandas_agent = SmartDataframe(dataFrame,config={"llm":llm, "response_parser":StreamLitResponse})
-        answer = pandas_agent.chat(prompt)
-        return answer
+# def generateResponse(dataFrame,prompt):
+#         llm = GoogleGemini(api_key=gemini_api_key)
+#         pandas_agent = SmartDataframe(dataFrame,config={"llm":llm, "response_parser":StreamLitResponse})
+#         answer = pandas_agent.chat(prompt)
+#         return answer
 
 # st.write("# AI Data Analyst")
 # st.write("##### Engage in insightful conversations with your data through powerful visualizations, empowering you to uncover valuable insights and make informed decisions effortlessly!")
