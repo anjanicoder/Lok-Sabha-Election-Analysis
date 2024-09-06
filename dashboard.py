@@ -17,7 +17,8 @@ import streamlit as st
 import os
 import pandas as pd
 import google.generativeai as genai
-
+from PIL import Image
+import base64 
 
 
 # # Set Streamlit to wide mode by default
