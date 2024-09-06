@@ -440,6 +440,7 @@ st.title("Ask From AI")
 # Create columns for inputs and buttons
 col1, col2 = st.columns(2)
 
+
 with col1:
     input1 = st.text_input("Ask Queries related to graph 1 ✨", placeholder="Ask me about your data")
     # Display the teacher image as a clickable button
@@ -450,6 +451,8 @@ with col1:
             cursor: pointer;
             display: inline-block;
             margin: 0px;
+            position: relative;
+            left: 5px;  /* Move the button 5px to the right */
         }}
         .teacher-image {{
             width: 150px;
@@ -486,6 +489,8 @@ with col2:
             cursor: pointer;
             display: inline-block;
             margin: 0px;
+            position: relative;
+            left: 5px;  /* Move the button 5px to the right */
         }}
         .teacher-image {{
             width: 150px;
