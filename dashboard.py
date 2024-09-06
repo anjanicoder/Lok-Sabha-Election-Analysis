@@ -361,36 +361,24 @@ gemini_api = "AIzaSyAlzvQ_9dUdj5z-AUjsYOM5uHP-XPUvKAQ"  # Replace this with your
 # Configure the Gemini model with the API key
 genai.configure(api_key=gemini_api)
 
+
 # Function to generate a dataframe-related response using Gemini
 def generateDataframeResponse(dataFrame, prompt):
-    # Convert the dataframe to a string for analysis
     df_summary = dataFrame.to_string()
-
-    # Create the model instance
     model = genai.GenerativeModel('gemini-1.5-pro')
-
-    # Construct the prompt for the Gemini model
     full_prompt = (
         f"Role: Act as PANDAS AI Model.\n"
         f"Task: Given the question '{prompt}', provide a response based on the data below.\n"
         f"Dataframe summary: {df_summary}\n"
         f"Dont write these things - PANDAS AI model here"
     )
-
-    # Generate content using the Gemini model
     response = model.generate_content(full_prompt)
-    
     return response.text
 
 # Function to generate a detailed analysis including general assumptions using Gemini
 def generateDetailedAnalysis(dataFrame, prompt):
-    # Convert the dataframe to a string for analysis
     df_summary = dataFrame.to_string()
-
-    # Create the model instance
     model = genai.GenerativeModel('gemini-1.5-pro')
-
-    # Construct the prompt for the Gemini model
     full_prompt = (
         f"Role: Act as an informed analyst.\n"
         f"Task: Given the question '{prompt}', provide a detailed analysis based on the data below and include general assumptions.\n"
@@ -401,65 +389,27 @@ def generateDetailedAnalysis(dataFrame, prompt):
         f"- General context and assumptions related to the data\n"
         f"Avoid including irrelevant technical details and focus on what would be meaningful and understandable to a general audience."
     )
-
-    # Generate content using the Gemini model
     response = model.generate_content(full_prompt)
-    
     return response.text
 
-# Input box for user queries related to the data
-input1 = st.text_input("Ask Queries related to graph 1 ✨", placeholder="Ask me about your data")
-
-# Display the initial dataframe-related response
-if input1:
-    # Generate the dataframe-related response using Gemini
-    initial_response = generateDataframeResponse(dataFrame=top_parties_df, prompt=input1)
-    st.write(initial_response)
-else:
-    st.write("Please ask a query related to the data.")
-
-# Display the button to trigger detailed analysis
-if st.button("🔮 Analyze"):
-    if input1:
-        # Generate the detailed analysis using Gemini
-        detailed_response = generateDetailedAnalysis(dataFrame=top_parties_df, prompt=input1)
-        st.write(detailed_response)
-    else:
-        st.write("Please ask a query related to the data.")
-
-
-
+# Function to generate a response using Gemini
 def generateResponse(dataFrame, prompt):
-    # Convert the dataframe to a string for analysis
     df_summary = dataFrame.to_string()
-
-    # Configure the Gemini model
-    gemini_api_key = "gemini_api_key"  # Set your actual Gemini API key
     model = genai.GenerativeModel('gemini-1.5-pro')
-
-    # Construct the prompt for the Gemini model
     full_prompt = (
         f"Role: Act as PANDAS AI Model.\n"
         f"Task: Given the question '{prompt}', provide a response based on the data below.\n"
         f"Dataframe summary: {df_summary}\n"
         f"Don't include irrelevant technical details."
     )
-
-    # Generate content using the Gemini model
     response = model.generate_content(full_prompt)
-    
     return response.text
 
+# Function to analyze trends using Gemini
 def analyzeTrends(dataFrame, input_query):
     try:
-        # Generate the summary of the dataframe
         summary = dataFrame.describe().to_string()
-        
-        # Configure the Gemini model
-        gemini_api_key = "gemini_api_key"  # Set your actual Gemini API key
         model = genai.GenerativeModel('gemini-1.5-pro')
-        
-        # Construct the prompt for the Gemini model
         full_prompt = (
             f"Role: Act as a Media Reporter.\n"
             f"Task: Analyze the trend in the following data and explain the possible real-world reasons behind these trends based on Indian election history:\n\n"
@@ -470,26 +420,83 @@ def analyzeTrends(dataFrame, input_query):
             f"- Provide real-life scenarios related to India\n"
             f"Avoid including irrelevant technical details and focus on practical explanations that are understandable to a general audience."
         )
-        
-        # Generate content using the Gemini model
         response = model.generate_content(full_prompt)
-        
         return response.text
     except Exception as e:
         return f"I can't answer that question. Error: {e}"
+        
+with col1:
+    input1 = st.text_input("Ask Queries related to graph 1 ✨", placeholder="Ask me about your data")
+    # Display the teacher image as a clickable button
+    st.markdown(
+        f"""
+        <style>
+        .teacher-button {{
+            cursor: pointer;
+            display: inline-block;
+            margin: 0px;
+        }}
+        .teacher-image {{
+            width: 150px;
+            height: 150px;
+            object-fit: contain;
+        }}
+        </style>
+        <div class="teacher-button" onclick="document.getElementById('analyze-button-1').click()">
+            <img src="{teacher_image_url}" class="teacher-image" alt="Click to analyze trends">
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+    # Handle Enter key press for generating responses
+    if input1:
+        # Generate the dataframe-related response
+        initial_response = generateDataframeResponse(dataFrame=top_parties_df, prompt=input1)
+        st.write(initial_response)
+    
+    # Hidden button to be triggered by the image click
+    if st.button("Analyze", key="analyze-button-1", help="Click the teacher image to analyze trends"):
+        if input1:
+            detailed_response = generateDetailedAnalysis(dataFrame=top_parties_df, prompt=input1)
+            st.write(detailed_response)
+        else:
+            st.write("Please ask a query related to the data.")
 
-# Streamlit input and button
-input2 = st.text_input("Ask Queries related to graph 3 ✨", placeholder="Write question here")
-answer = generateResponse(dataFrame=gender_ratio, prompt=input2)
-st.write(answer)
 
-# Button with a generic symbol (emoji) 
-if st.button('🔮 Analyze Trends', help='Click to analyze trends'):
-    # Analyze trends based on the input query
-    trend_analysis = analyzeTrends(dataFrame=gender_ratio, input_query=input2)
-    st.write(trend_analysis)
+with col2:
+    input2 = st.text_input("Ask Queries related to graph 3 ✨", placeholder="Write question here")
+    # Display the teacher image as a clickable button
+    st.markdown(
+        f"""
+        <style>
+        .teacher-button {{
+            cursor: pointer;
+            display: inline-block;
+            margin: 0px;
+        }}
+        .teacher-image {{
+            width: 150px;
+            height: 150px;
+            object-fit: contain;
+        }}
+        </style>
+        <div class="teacher-button" onclick="document.getElementById('analyze-button-2').click()">
+            <img src="{teacher_image_url}" class="teacher-image" alt="Click to analyze trends">
+        </div>""",
+        unsafe_allow_html=True)
+# Handle Enter key press for generating responses
+    if input2:
+        # Generate the general response
+        answer = generateResponse(dataFrame=gender_ratio, prompt=input2)
+        st.write(answer)
 
-
+    # Hidden button to be triggered by the image click
+    if st.button("Analyze", key="analyze-button-2", help="Click the teacher image to analyze trends"):
+        if input2:
+            trend_analysis = analyzeTrends(dataFrame=gender_ratio, input_query=input2)
+            st.write(trend_analysis)
+        else:
+            st.write("Please ask a query related to the data.")
 
 
 
