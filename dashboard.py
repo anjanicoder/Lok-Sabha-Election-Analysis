@@ -353,70 +353,138 @@ with col3:
 
 st.markdown("<br><br>", unsafe_allow_html=True)
 
-# User input for asking queries related to graph 1
-input1 = st.text_input("Ask Queries related to graph 1 ✨", placeholder="Ask me about your data")
+# Function to generate a dataframe-related response using Gemini
+def generateDataframeResponse(dataFrame, prompt):
+    # Convert the dataframe to a string for analysis
+    df_summary = dataFrame.to_string()
 
-# Display the magic button to reveal insights
-if st.button("🔮 Reveal Insights"):
-    if input1:
-        # Generate response based on the user query and dataframe
-        
+    # Configure the Gemini model
+    gemini_api_key = "gemini_api_key"  # Set your actual Gemini API key
+    model = genai.GenerativeModel('gemini-1.5-pro')
 
-        # Convert the dataframe to a string for model analysis
-        summary = top_parties_df.to_string()
+    # Construct the prompt for the Gemini model
+    full_prompt = (
+        f"Role: Act as PANDAS AI Model.\n"
+        f"Task: Given the question '{prompt}', provide a response based on the data below.\n"
+        f"Dataframe summary: {df_summary}\n"
+        f"Dont write these things - PANDAS AI model here"
+    )
 
-        # Configure the Gemini model
-        genai.configure(api_key=gemini_api_key)
-        model = genai.GenerativeModel('gemini-1.5-pro')
+    # Generate content using the Gemini model
+    response = model.generate_content(full_prompt)
+    
+    return response.text
 
-        # Construct the prompt with the dataframe summary
-        response = model.generate_content(
+# Function to generate a detailed analysis including general assumptions using Gemini
+def generateDetailedAnalysis(dataFrame, prompt):
+    # Convert the dataframe to a string for analysis
+    df_summary = dataFrame.to_string()
+
+    # Configure the Gemini model
+    gemini_api_key = "gemini_api_key"  # Set your actual Gemini API key
+    model = genai.GenerativeModel('gemini-1.5-pro')
+
+    # Construct the prompt for the Gemini model
+    full_prompt = (
         f"Role: Act as an informed analyst.\n"
-        f"Task: Given the question '{input1}', provide a reasoned explanation based on general knowledge and relevant context related to Lok sabha Election of india {years}\n"
-        f"Additional Context: The data pertains to Lok Sabha elections in India. You don’t need to rely heavily on the specific dataframe but try to first read fromn it {summary}provided but should give a thoughtful response considering the typical factors involved in such elections.\n"
-        f"Break down the response into: \n"
+        f"Task: Given the question '{prompt}', provide a detailed analysis based on the data below and include general assumptions.\n"
+        f"Dataframe summary: {df_summary}\n"
+        f"Break down the response into:\n"
         f"- State-wise analysis\n"
         f"- Party-wise analysis\n"
+        f"- General context and assumptions related to the data\n"
         f"Avoid including irrelevant technical details and focus on what would be meaningful and understandable to a general audience."
-        )
+    )
 
+    # Generate content using the Gemini model
+    response = model.generate_content(full_prompt)
+    
+    return response.text
 
-        # Display the Gemini model's response
-        st.write(response.text)
+# Input box for user queries related to the data
+input1 = st.text_input("Ask Queries related to graph 1 ✨", placeholder="Ask me about your data")
+
+# Display the initial dataframe-related response
+
+if input1:
+    # Generate the dataframe-related response using Gemini
+    initial_response = generateDataframeResponse(dataFrame=top_parties_df, prompt=input1)
+    st.write(initial_response)
+else:
+    st.write("Please ask a query related to the data.")
+
+# Display the button to trigger detailed analysis
+if st.button("🔮 Analyze"):
+    if input1:
+        # Generate the detailed analysis using Gemini
+        detailed_response = generateDetailedAnalysis(dataFrame=top_parties_df, prompt=input1)
+        st.write(detailed_response)
     else:
         st.write("Please ask a query related to the data.")
 
 
 
-# try:
-input2 = st.text_input("Ask Queries related to graph 3 ✨",placeholder="Write question here")
+
+
+def generateResponse(dataFrame, prompt):
+    # Convert the dataframe to a string for analysis
+    df_summary = dataFrame.to_string()
+
+    # Configure the Gemini model
+    gemini_api_key = "gemini_api_key"  # Set your actual Gemini API key
+    model = genai.GenerativeModel('gemini-1.5-pro')
+
+    # Construct the prompt for the Gemini model
+    full_prompt = (
+        f"Role: Act as PANDAS AI Model.\n"
+        f"Task: Given the question '{prompt}', provide a response based on the data below.\n"
+        f"Dataframe summary: {df_summary}\n"
+        f"Don't include irrelevant technical details."
+    )
+
+    # Generate content using the Gemini model
+    response = model.generate_content(full_prompt)
+    
+    return response.text
+
+def analyzeTrends(dataFrame, input_query):
+    try:
+        # Generate the summary of the dataframe
+        summary = dataFrame.describe().to_string()
+        
+        # Configure the Gemini model
+        gemini_api_key = "gemini_api_key"  # Set your actual Gemini API key
+        model = genai.GenerativeModel('gemini-1.5-pro')
+        
+        # Construct the prompt for the Gemini model
+        full_prompt = (
+            f"Role: Act as a Media Reporter.\n"
+            f"Task: Analyze the trend in the following data and explain the possible real-world reasons behind these trends based on Indian election history:\n\n"
+            f"{summary}\n\n"
+            f"Question from user: {input_query}\n\n"
+            f"Provide insights that consider typical patterns and historical context. Break down your explanation into:\n"
+            f"- Analyze the dataframe and explain the trends\n"
+            f"- Provide real-life scenarios related to India\n"
+            f"Avoid including irrelevant technical details and focus on practical explanations that are understandable to a general audience."
+        )
+        
+        # Generate content using the Gemini model
+        response = model.generate_content(full_prompt)
+        
+        return response.text
+    except Exception as e:
+        return f"I can't answer that question. Error: {e}"
+
+# Streamlit input and button
+input2 = st.text_input("Ask Queries related to graph 3 ✨", placeholder="Write question here")
+answer = generateResponse(dataFrame=gender_ratio, prompt=input2)
+st.write(answer)
 
 # Button with a generic symbol (emoji) 
 if st.button('🔮 Analyze Trends', help='Click to analyze trends'):
-    try:
-        # Placeholder for generic symbol
-
-        summary = gender_ratio.describe().to_string()
-        # Check if the response is a string or a plot
-       
-        # Configure the model
-        model = genai.GenerativeModel('gemini-1.5-pro')
-
-        # Construct the prompt, passing the summarized dataframe
-        response = model.generate_content(
-            f"Role: Act as a Media Reporter.\n"
-            f"Task: Analyze the trend in the following data and explain the possible real-world reasons behind these trends based on Indian election history:\n\n"
-            f"{summary} and try to answer according to user requiremnt question :{input2}\n\n"
-            f"Provide insights that consider typical patterns and historical context. Break down your explanation into:\n"
-            f"- Analyze the dataframe and tell the reason\n"
-            f"- Try to give reason on real life scenario of india\n"
-            f"Avoid including irrelevant technical details and focus on practical explanations that are understandable to a general audience."
-        )
-            
-        st.write(response.text)
-    except Exception as e:
-        st.write("I can't answer that question")
-        st.write(f"Error: {e}")
+    # Analyze trends based on the input query
+    trend_analysis = analyzeTrends(dataFrame=gender_ratio, input_query=input2)
+    st.write(trend_analysis)
 
 
 
@@ -712,24 +780,28 @@ with col2:
     # Filter the dataframe based on the selected constituency
     df = filtered_df2[filtered_df2['pc_name'] == constituency]
 
-    # Create a treemap with a peach color palette
-    fig = px.treemap(
+    # Sort the dataframe in decreasing order of votes
+    df = df.sort_values(by='Votes', ascending=False)
+
+    # Create a horizontal bar graph with the 'inferno' color palette
+    fig = px.bar(
         df,
-        path=['position', 'Candidate_Name'],
-        values='Votes',
+        y='Candidate_Name',  # Use 'y' for horizontal bars
+        x='Votes',
         color='Votes',
-        color_continuous_scale=[[0, '#FFE5B4'], [1, '#FF6347']],
-        hover_data={'Votes': True},
-        title=f'Votes Distribution by Position for {constituency}'
+        color_continuous_scale='inferno',  # Use the inferno color palette
+        title=f'Votes Distribution by Candidate for {constituency}',
+        labels={'Votes': 'Number of Votes', 'Candidate_Name': 'Candidate'},
+        orientation='h'  # Set orientation to horizontal
     )
 
-    # Customize the treemap layout
+    # Customize the horizontal bar graph layout
     fig.update_layout(
         plot_bgcolor='rgba(0,0,0,0)',
         paper_bgcolor='rgba(0,0,0,0)',
         title_font=dict(size=24, color='white', family="Arial"),
         font=dict(color='black', size=22, family="Arial"),
-        margin=dict(l=10, r=10, t=70, b=150),
+        margin=dict(l=150, r=10, t=70, b=50),  # Adjust margins for better readability
         coloraxis_colorbar=dict(
             orientation="h",
             yanchor="top",
@@ -738,18 +810,39 @@ with col2:
             x=0.5,
             tickfont=dict(color='white', size=16),
             title=dict(text="Votes", side="bottom", font=dict(size=18, color="black"))
+        ),
+        yaxis=dict(
+            autorange='reversed'  # Ensure that larger values are at the top
         )
     )
 
-    # Show labels inside the blocks with a better size
-    fig.update_traces(
-        textinfo="label+value",
-        textfont=dict(size=20, color='black'),
-        marker=dict(
-            line=dict(color='rgba(0,0,0,0)', width=0),
-            pad=dict(t=0, l=0, r=0, b=0)
-        )
-    )
+    # Display only the top 2-3 bars initially
+    top_n = 3
+    top_df = df.head(top_n)  # Get the top N rows
+    top_df = top_df.sort_values(by='Votes',ascending = True)
+
+    st.write("### Top Candidates")
+    st.plotly_chart(px.bar(
+        top_df,
+        y='Candidate_Name',  # Use 'y' for horizontal bars
+        x='Votes',
+        color='Votes',
+        color_continuous_scale='inferno',
+        title=f'Top {top_n} Candidates for {constituency}',
+        labels={'Votes': 'Number of Votes', 'Candidate_Name': 'Candidate'},
+        orientation='h'
+    ).update_layout(
+        plot_bgcolor='rgba(0,0,0,0)',
+        paper_bgcolor='rgba(0,0,0,0)',
+        title_font=dict(size=24, color='white', family="Arial"),
+        font=dict(color='black', size=22, family="Arial"),
+        margin=dict(l=150, r=10, t=70, b=50)
+    ))
+
+    # Expandable section for remaining bars
+    with st.expander("Show More"):
+        st.plotly_chart(fig)
+
 
     # Display the treemap in Streamlit
     st.plotly_chart(fig)
