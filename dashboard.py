@@ -660,7 +660,7 @@ with col2:
             title={'text': "Seats"},
             thickness=15,
             len=0.3,
-            bgcolor='rgba(0,0,0,0.6)',  # Dark background for the color bar
+            bgcolor='#0E1117',  # Dark background for the color bar
             tick0=0,
             dtick=5,  # Adjust based on your data range
             xanchor='right',  # Anchor the colorbar to the right side
