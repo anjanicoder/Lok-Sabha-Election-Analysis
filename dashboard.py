@@ -848,9 +848,6 @@ with col2:
         st.plotly_chart(fig)
 
 
-    # Display the treemap in Streamlit
-    st.plotly_chart(fig)
-
 # Display the complete dashboard
 st.markdown("---")
 
