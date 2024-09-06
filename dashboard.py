@@ -452,7 +452,7 @@ with col1:
             display: inline-block;
             margin: 0px;
             position: relative;
-            left: 5px;  /* Move the button 5px to the right */
+            left: -5px;  /* Move the button 5px to the right */
         }}
         .teacher-image {{
             width: 150px;
