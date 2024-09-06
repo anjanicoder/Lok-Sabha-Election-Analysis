@@ -12,12 +12,12 @@ from streamlit_folium import st_folium
 import requests
 import plotly.graph_objects as go
 
-from pandasai.llm import GoogleGemini
+# from pandasai.llm import GoogleGemini
 import streamlit as st
 import os
 import pandas as pd
-from pandasai import SmartDataframe
-from pandasai.responses.response_parser import  ResponseParser
+# from pandasai import SmartDataframe
+# from pandasai.responses.response_parser import  ResponseParser
 import google.generativeai as genai
 
 
@@ -357,9 +357,9 @@ st.markdown("<br><br>", unsafe_allow_html=True)
 
 # User input for asking queries related to graph 1
 input1 = st.text_input("Ask Queries related to graph 1 ✨", placeholder="Ask me about your data")
-answer = ""
-answer = generateResponse(dataFrame=top_parties_df, prompt=input1)
-st.write(answer)
+# answer = ""
+# answer = generateResponse(dataFrame=top_parties_df, prompt=input1)
+# st.write(answer)
 # Display the magic button to reveal insights
 if st.button("🔮 Reveal Insights"):
     if input1:
@@ -394,8 +394,8 @@ if st.button("🔮 Reveal Insights"):
 
 # try:
 input2 = st.text_input("Ask Queries related to graph 3 ✨",placeholder="Write question here")
-answer = generateResponse(dataFrame=gender_ratio, prompt=input2)
-st.write(answer)
+# answer = generateResponse(dataFrame=gender_ratio, prompt=input2)
+# st.write(answer)
 # Button with a generic symbol (emoji) 
 if st.button('🔮 Analyze Trends', help='Click to analyze trends'):
     try:
@@ -634,10 +634,10 @@ with col2:
     # Display the map in Streamlit
     st.plotly_chart(fig, use_container_width=True)
 
-    input2 = st.text_input("Ask Queries related to map", placeholder="Provide additional details", key="2nd")
-    if input2:
-        answer = generateResponse(dataFrame=agg_data,prompt=input2)
-        st.write(answer)
+    # input2 = st.text_input("Ask Queries related to map", placeholder="Provide additional details", key="2nd")
+    # if input2:
+    #     answer = generateResponse(dataFrame=agg_data,prompt=input2)
+    #     st.write(answer)
 
 
 
