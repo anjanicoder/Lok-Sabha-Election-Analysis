@@ -353,13 +353,20 @@ with col3:
 
 st.markdown("<br><br>", unsafe_allow_html=True)
 
+
+
+
+gemini_api = "AIzaSyAlzvQ_9dUdj5z-AUjsYOM5uHP-XPUvKAQ"  # Replace this with your actual key
+
+# Configure the Gemini model with the API key
+genai.configure(api_key=gemini_api)
+
 # Function to generate a dataframe-related response using Gemini
 def generateDataframeResponse(dataFrame, prompt):
     # Convert the dataframe to a string for analysis
     df_summary = dataFrame.to_string()
 
-    # Configure the Gemini model
-    gemini_api_key = "gemini_api_key"  # Set your actual Gemini API key
+    # Create the model instance
     model = genai.GenerativeModel('gemini-1.5-pro')
 
     # Construct the prompt for the Gemini model
@@ -380,8 +387,7 @@ def generateDetailedAnalysis(dataFrame, prompt):
     # Convert the dataframe to a string for analysis
     df_summary = dataFrame.to_string()
 
-    # Configure the Gemini model
-    gemini_api_key = "gemini_api_key"  # Set your actual Gemini API key
+    # Create the model instance
     model = genai.GenerativeModel('gemini-1.5-pro')
 
     # Construct the prompt for the Gemini model
@@ -405,7 +411,6 @@ def generateDetailedAnalysis(dataFrame, prompt):
 input1 = st.text_input("Ask Queries related to graph 1 ✨", placeholder="Ask me about your data")
 
 # Display the initial dataframe-related response
-
 if input1:
     # Generate the dataframe-related response using Gemini
     initial_response = generateDataframeResponse(dataFrame=top_parties_df, prompt=input1)
@@ -421,8 +426,6 @@ if st.button("🔮 Analyze"):
         st.write(detailed_response)
     else:
         st.write("Please ask a query related to the data.")
-
-
 
 
 
@@ -485,6 +488,7 @@ if st.button('🔮 Analyze Trends', help='Click to analyze trends'):
     # Analyze trends based on the input query
     trend_analysis = analyzeTrends(dataFrame=gender_ratio, input_query=input2)
     st.write(trend_analysis)
+
 
 
 
