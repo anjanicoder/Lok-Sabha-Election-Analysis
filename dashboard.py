@@ -424,7 +424,17 @@ def analyzeTrends(dataFrame, input_query):
         return response.text
     except Exception as e:
         return f"I can't answer that question. Error: {e}"
-        
+
+
+# URL of the image on GitHub
+teacher_image_url = "https://raw.githubusercontent.com/anjanicoder/Lok-Sabha-Election-Analysis/master/teacher2.png"
+
+# Streamlit input boxes and image buttons
+st.title("Ask From AI")
+
+# Create columns for inputs and buttons
+col1, col2 = st.columns(2)
+
 with col1:
     input1 = st.text_input("Ask Queries related to graph 1 ✨", placeholder="Ask me about your data")
     # Display the teacher image as a clickable button
