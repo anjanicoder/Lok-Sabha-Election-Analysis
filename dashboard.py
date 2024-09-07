@@ -421,7 +421,7 @@ def generateDetailedAnalysis(dataFrame, prompt):
     model = genai.GenerativeModel('gemini-1.5-pro')
     full_prompt = (
         f"Role: Act as an informed analyst.\n"
-        f"Task: Given the question '{prompt}', provide a detailed analysis based on the data below and include general assumptions.\n"
+        f"Task: Given the question '{prompt}', provide a detailed analysis based on the data below and include general assumptions.respond in 150 words or less\n"
         f"Dataframe summary: {df_summary}\n"
         f"Break down the response into:\n"
         f"- State-wise analysis\n"
