@@ -830,7 +830,8 @@ with col1:
         textinfo='percent',
         hoverinfo='label+percent+value',
         textposition='inside',
-        texttemplate='%{value:.2f}%'
+        texttemplate='%{value:.2f}%',
+        textfont=dict(color='white')  # Set text color to white
     )
     
     # Update layout for better readability
