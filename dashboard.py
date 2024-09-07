@@ -69,24 +69,34 @@ input_query = st.text_input("", placeholder="Write your query here:")
 # Initialize the Generative Model
 model = genai.GenerativeModel('gemini-1.5-pro')
 
-# Check if the user has provided an input
-if input_query:
-    # Prepare the full prompt for the model
-    full_prompt = (
-        f"Role: Act as an informed analyst.\n"
-        f"Task: Given the question '{input_query}', provide a detailed analysis based on general information and include general assumptions in 50 words.\n"
-        f"Break down the response into:\n"
-        f"- State-wise analysis\n"
-        f"- Party-wise analysis\n"
-        f"Avoid including irrelevant technical details and focus on what would be meaningful and understandable to a general audience."
-    )
+# Use the sidebar for both input and output
+with st.sidebar:
+    st.title("Ask Anything Related to Indian Election")
     
-    # Generate content using the model
-    response = model.generate_content(full_prompt)
+    # Input box
+    input_query = st.text_input("Write your query here:")
     
-    # Display the response
-    st.write(response.text)
-
+    # Display the response in the sidebar
+    if input_query:
+        if gemini_api_key:
+            # Prepare the full prompt for the model
+            full_prompt = (
+                f"Role: Act as an informed analyst.\n"
+                f"Task: Given the question '{input_query}', provide a detailed analysis based on general information and include general assumptions in 50 words.\n"
+                f"Break down the response into:\n"
+                f"- State-wise analysis\n"
+                f"- Party-wise analysis\n"
+                f"Avoid including irrelevant technical details and focus on what would be meaningful and understandable to a general audience."
+            )
+            
+            try:
+                # Generate content using the model
+                response = model.generate_content(full_prompt)
+                
+                # Display the response in the sidebar
+                st.sidebar.write(response.text)
+            except Exception as e:
+                st.sidebar.error(f"An error occurred: {e}")
 
 # uploaded_file = st.file_uploader("Upload your dataset here (CSV)",type="csv")
 # if uploaded_file is not None:
