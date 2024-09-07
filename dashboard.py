@@ -76,7 +76,7 @@ if not gemini_api:
 # Initialize the Generative Model if API key is available
 if gemini_api:
     try:
-        model = genai.GenerativeModel('gemini-1.5-pro', api_key=gemini_api_key)
+        model = genai.GenerativeModel('gemini-1.5-pro')
     except Exception as e:
         st.sidebar.error(f"Failed to initialize the model: {e}")
 else:
