@@ -812,7 +812,7 @@ with col1:
 
     # Define an orange color palette
         # Define a color palette with only the first color being orange
-    custom_colors = ['#FFA07A', '#3CB3C1', '#48D1CC', '#F4A460', '#DA70D6', '#87CEEB', '#32CD32', '#FFD700']
+    custom_colors = ['#ff0000', '#3cb371', '#ffa500', '#ee82ee', '#DA70D6', '#87CEEB', '#32CD32', '#FFD700']
 
     
     # Create the pie chart with the custom color palette
