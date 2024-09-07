@@ -810,18 +810,18 @@ with col1:
     # Concatenate top parties with others
     final_data = pd.concat([top_parties, others_sum])
 
-        # Define an orange color palette
-    # Define the color palette: The highest value will get the darkest shade of orange
-    custom_colors = ['#FF4500', '#FF6347', '#FF7F50', '#FF8C00', '#FFA500', '#FF6A00', '#E65100', '#FF8500']
-
-    # Create the pie chart with the orange palette
+    # Define an orange color palette
+        # Define a color palette with only the first color being orange
+    custom_colors = ['#FF4500', '#87CEEB', '#32CD32', '#FFD700', '#FF69B4', '#8A2BE2', '#FF6347', '#4682B4']
+    
+    # Create the pie chart with the custom color palette
     fig_pie = px.pie(
         final_data, 
         names='Party', 
         values='Votes_Percentage', 
         title='Votes Percentage by Party',
         labels={'Party': 'Party', 'Votes_Percentage': 'Votes Percentage'},
-        color_discrete_sequence=orange_palette  # Apply the orange palette here
+        color_discrete_sequence=custom_colors  # Apply the custom palette here
     )
     
     # Update traces to show percentage values inside the pie slices
@@ -840,7 +840,6 @@ with col1:
         legend=dict(orientation="h", yanchor="bottom", y=-0.2)
     )
     
-
     # Display the pie chart in Streamlit
     st.plotly_chart(fig_pie)
 
