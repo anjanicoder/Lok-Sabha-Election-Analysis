@@ -244,7 +244,7 @@ st.subheader("Election Metrics 🗳️")
 col1, col2, col3, col4 = st.columns(4)
 col1.metric("Total Votes", formatted_total_votes)
 col2.metric("Total Turnout", formatted_total_turnout)
-if years == 2019 or years == 2024:
+if years in 2019 or years in 2024:
     col3.metric("Total Constituencies", "543")
 else:
     col3.metric("Total Constituencies", formatted_total_constituencies)
