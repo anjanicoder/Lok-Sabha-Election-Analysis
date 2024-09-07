@@ -70,11 +70,11 @@ input_query = st.text_input("", placeholder="Write your query here:")
 model = genai.GenerativeModel('gemini-1.5-pro')
 
 
-if not gemini_api_key:
+if not gemini_api:
     st.sidebar.error("API key is not set. Please configure the GEMINI_API_KEY environment variable.")
 
 # Initialize the Generative Model if API key is available
-if gemini_api_key:
+if gemini_api:
     try:
         model = genai.GenerativeModel('gemini-1.5-pro', api_key=gemini_api_key)
     except Exception as e:
@@ -90,7 +90,7 @@ with st.sidebar:
     input_query = st.text_input("Write your query here:")
 
     # Display the response in the sidebar
-    if input_query and gemini_api_key:
+    if input_query and gemini_api:
         try:
             # Prepare the full prompt for the model
             full_prompt = (
