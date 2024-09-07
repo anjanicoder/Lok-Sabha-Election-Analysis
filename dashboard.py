@@ -53,29 +53,23 @@ st.markdown("<h1 class='gradient-text'>Lok Sabha Election Analysis</h1><br><br>"
 
 
 
-# class StreamLitResponse(ResponseParser):
-#         def __init__(self,context) -> None:
-#               super().__init__(context)
-#         def format_dataframe(self,result):
-#                st.dataframe(result['value'])
-#                return
-#         def format_plot(self,result):
-#                st.image(result['value'])
-#                return
-#         def format_other(self, result):
-#                st.write(result['value'])
-#                return
 
 gemini_api_key = "AIzaSyAoH_9XUjI3qOpKGsOjZ4mqe6UwL2uak6c"
 
-# def generateResponse(dataFrame,prompt):
-#         llm = GoogleGemini(api_key=gemini_api_key)
-#         pandas_agent = SmartDataframe(dataFrame,config={"llm":llm, "response_parser":StreamLitResponse})
-#         answer = pandas_agent.chat(prompt)
-#         return answer
+st.sidebar.title("Ask Anything Related to indian Election")
+input1 = st.text_input("", placeholder="write your query here:-")
+model = genai.GenerativeModel('gemini-1.5-pro')
+full_prompt = (
+        f"Role: Act as an informed analyst.\n"
+        f"Task: Given the question '{prompt}', provide a detailed analysis based on general information and include general assumptions.in 50 words\n"
+        f"Break down the response into:\n"
+        f"- State-wise analysis\n"
+        f"- Party-wise analysis\n"
+        f"Avoid including irrelevant technical details and focus on what would be meaningful and understandable to a general audience."
+    )
+response = model.generate_content(full_prompt)
+return response.text
 
-# st.write("# AI Data Analyst")
-# st.write("##### Engage in insightful conversations with your data through powerful visualizations, empowering you to uncover valuable insights and make informed decisions effortlessly!")
 
 
 # uploaded_file = st.file_uploader("Upload your dataset here (CSV)",type="csv")
@@ -132,6 +126,7 @@ gender_ratio = pd.read_csv('gender_rat.csv')
 
 
 
+
 # Sidebar filters
 st.sidebar.title("Filters")
 years = st.sidebar.multiselect("Select Year(s)", df3['election_year'].unique(), default=[2019])
@@ -172,6 +167,8 @@ with st.sidebar:
         # Add content to the sidebar/drawer
         with st.expander("Data Visualization"):
             st.write("Made with Gemini pro ")
+
+
         st.write("<div>Developed by - <span style=\"color: cyan; font-size: 24px; font-weight: 600;\">Anjani Nandan</span></div>",unsafe_allow_html=True)
 
 
@@ -416,7 +413,7 @@ def analyzeTrends(dataFrame, input_query):
         summary = dataFrame.describe().to_string()
         model = genai.GenerativeModel('gemini-1.5-pro')
         full_prompt = (
-            f"Role: Act as a Media Reporter.\n"
+            f"Role: Act as Analyst and social women.\n"
             f"Task: Analyze the trend in the following data and explain the possible real-world reasons behind these trends based on Indian election history:\n\n"
             f"{summary}\n\n"
             f"Question from user: {input_query}\n\n"
@@ -728,10 +725,6 @@ with col2:
     # Display the map in Streamlit
     st.plotly_chart(fig, use_container_width=True)
 
-    # input2 = st.text_input("Ask Queries related to map", placeholder="Provide additional details", key="2nd")
-    # if input2:
-    #     answer = generateResponse(dataFrame=agg_data,prompt=input2)
-    #     st.write(answer)
 
 
 
