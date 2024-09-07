@@ -93,7 +93,7 @@ with st.sidebar:
         try:
             # Prepare the full prompt for the model
             full_prompt = (
-                f"Role: Act as an informed analyst.\n"
+                f"Role: Act as Google\n"
                 f"Task: Given the question '{input_query}', provide a detailed analysis based on general information and include general assumptions in 50 words.\n"
                 f"Break down the response into points:\n"
                 f"Avoid including irrelevant technical details and focus on what would be meaningful and understandable to a general audience."
