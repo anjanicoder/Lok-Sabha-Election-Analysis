@@ -811,8 +811,9 @@ with col1:
     final_data = pd.concat([top_parties, others_sum])
 
         # Define an orange color palette
-    orange_palette = ['#FFA500', '#FF8C00', '#FF7F50', '#FF6347', '#FF4500', '#FF6A00', '#E65100', '#FF8500']
-    
+    # Define the color palette: The highest value will get the darkest shade of orange
+    custom_colors = ['#FF4500', '#FF6347', '#FF7F50', '#FF8C00', '#FFA500', '#FF6A00', '#E65100', '#FF8500']
+
     # Create the pie chart with the orange palette
     fig_pie = px.pie(
         final_data, 
