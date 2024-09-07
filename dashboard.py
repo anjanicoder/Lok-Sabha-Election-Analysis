@@ -93,15 +93,16 @@ with st.sidebar:
         try:
             # Prepare the full prompt for the model
             full_prompt = (
-                f"Role: Act as an Informative Assistant\n"
-                f"Task: Answer the question '{input_query}' clearly and concisely. The response should be informative and include a general assumption and a touch of embellishment, while remaining under 50 words.\n"
+                f"Role: Act as a Conversational Assistant\n"
+                f"Task: Answer the question '{input_query}' in a clear and concise manner. The response should be informative and include a relevant general assumption and minimal embellishment. Aim for a conversational tone, avoiding robotic language. Keep the response under 50 words.\n"
                 f"Break down the response into points:\n"
-                f"1. Provide a direct and accurate answer to the question.\n"
-                f"2. Include a relevant general assumption or context if necessary.\n"
-                f"3. Add minimal embellishment to make the response engaging but avoid unnecessary details.\n"
-                f"4. Ensure the response is focused, meaningful, and understandable for a general audience, avoiding irrelevant information."
+                f"1. Start with a straightforward and accurate answer to the question.\n"
+                f"2. Add a relevant general assumption or context if needed.\n"
+                f"3. Include a touch of embellishment to make the response engaging, but avoid unnecessary details.\n"
+                f"4. Ensure the response is natural and conversational, avoiding any robotic or overly formal language."
             )
-            # Generate content using the model
+            
+             # Generate content using the model
             response = model.generate_content(full_prompt)
             
             # Display the response in the sidebar
