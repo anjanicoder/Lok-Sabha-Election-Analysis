@@ -71,8 +71,7 @@ model = genai.GenerativeModel('gemini-1.5-pro')
 
 # Use the sidebar for both input and output
 with st.sidebar:
-    st.title("Ask Anything Related to Indian Election")
-    
+
     # Input box
     input_query = st.text_input("Write your query here:")
     
