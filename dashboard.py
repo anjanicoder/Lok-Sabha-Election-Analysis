@@ -86,7 +86,7 @@ with st.sidebar:
     st.title("Ask Anything Related to Indian Election")
 
     # Input box
-    input_query = st.text_input("Write your query here:")
+    input_query = st.text_input(placeholder="Write your query here:")
 
     # Display the response in the sidebar
     if input_query and gemini_api:
