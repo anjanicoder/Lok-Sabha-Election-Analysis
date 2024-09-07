@@ -76,15 +76,6 @@ gemini_api_key = "AIzaSyAoH_9XUjI3qOpKGsOjZ4mqe6UwL2uak6c"
 
 # st.write("# AI Data Analyst")
 # st.write("##### Engage in insightful conversations with your data through powerful visualizations, empowering you to uncover valuable insights and make informed decisions effortlessly!")
-with st.sidebar:
-        st.title("AI Data Analyst")
-        st.write("Engage in insightful conversations with your data through powerful visualizations, empowering you to uncover valuable insights and make informed decisions effortlessly!")
-        # Added a divider
-        st.divider()
-        # Add content to the sidebar/drawer
-        with st.expander("Data Visualization"):
-            st.write("Made with Gemini pro and pandas ai.")
-        st.write("<div>Developed by - <span style=\"color: cyan; font-size: 24px; font-weight: 600;\">Anjani Nandan</span></div>",unsafe_allow_html=True)
 
 
 # uploaded_file = st.file_uploader("Upload your dataset here (CSV)",type="csv")
@@ -160,6 +151,8 @@ default_pc_names = pc_names_options[-554:] if len(pc_names_options) > 10 else pc
 # Sidebar multiselect for `pc_names`
 pc_names = st.sidebar.multiselect("Select Constituency(ies)", pc_names_options, default=default_pc_names)
 
+
+
 # Apply filters
 filtered_df1 = df1[df1['election_year'].isin(years) & df1['pc_name'].isin(pc_names)]
 
@@ -169,6 +162,17 @@ filtered_df2 = df2[df2['election_year'].isin(years) & df2['pc_name'].isin(pc_nam
 
 # filtered_df3 = df3[df3['election_year'].isin(years) & df3['pc_name'].isin(pc_names) & df3['state'].isin(states)]
 filtered_df3 = df3[df3['election_year'].isin(years)]
+
+
+with st.sidebar:
+        st.title("AI Data Analyst")
+        st.write("Engage in insightful conversations with your data through powerful visualizations, empowering you to uncover valuable insights and make informed decisions effortlessly!")
+        # Added a divider
+        st.divider()
+        # Add content to the sidebar/drawer
+        with st.expander("Data Visualization"):
+            st.write("Made with Gemini pro ")
+        st.write("<div>Developed by - <span style=\"color: cyan; font-size: 24px; font-weight: 600;\">Anjani Nandan</span></div>",unsafe_allow_html=True)
 
 
 # Define a function to format numbers
@@ -442,7 +446,7 @@ col1, col2 = st.columns(2)
 
 
 with col1:
-    input1 = st.text_input("Ask Queries related to graph 1 ✨", placeholder="Ask me about your data")
+    input1 = st.text_input("Ask Queries related to Top Parties with Seats Won ✨", placeholder="Ask me about your data")
     # Display the teacher image as a clickable button
     st.markdown(
         f"""
@@ -480,7 +484,7 @@ with col1:
             st.write("Please ask a query related to the data.")
 
 with col2:
-    input2 = st.text_input("Ask Queries related to graph 3 ✨", placeholder="Write question here")
+    input2 = st.text_input("Ask Queries related to Genderwise Voter Turnout ✨", placeholder="Write question here")
     # Display the teacher image as a clickable button
     st.markdown(
         f"""
