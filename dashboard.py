@@ -69,15 +69,29 @@ input_query = st.text_input("", placeholder="Write your query here:")
 # Initialize the Generative Model
 model = genai.GenerativeModel('gemini-1.5-pro')
 
+
+if not gemini_api_key:
+    st.sidebar.error("API key is not set. Please configure the GEMINI_API_KEY environment variable.")
+
+# Initialize the Generative Model if API key is available
+if gemini_api_key:
+    try:
+        model = genai.GenerativeModel('gemini-1.5-pro', api_key=gemini_api_key)
+    except Exception as e:
+        st.sidebar.error(f"Failed to initialize the model: {e}")
+else:
+    st.sidebar.error("API key is not set.")
+
 # Use the sidebar for both input and output
 with st.sidebar:
+    st.title("Ask Anything Related to Indian Election")
 
     # Input box
     input_query = st.text_input("Write your query here:")
-    
+
     # Display the response in the sidebar
-    if input_query:
-        if gemini_api_key:
+    if input_query and gemini_api_key:
+        try:
             # Prepare the full prompt for the model
             full_prompt = (
                 f"Role: Act as an informed analyst.\n"
@@ -88,14 +102,13 @@ with st.sidebar:
                 f"Avoid including irrelevant technical details and focus on what would be meaningful and understandable to a general audience."
             )
             
-            try:
-                # Generate content using the model
-                response = model.generate_content(full_prompt)
-                
-                # Display the response in the sidebar
-                st.sidebar.write(response.text)
-            except Exception as e:
-                st.sidebar.error(f"An error occurred: {e}")
+            # Generate content using the model
+            response = model.generate_content(full_prompt)
+            
+            # Display the response in the sidebar
+            st.sidebar.write(response.text)
+        except Exception as e:
+            st.sidebar.error(f"An error occurred: {e}")
 
 # uploaded_file = st.file_uploader("Upload your dataset here (CSV)",type="csv")
 # if uploaded_file is not None:
