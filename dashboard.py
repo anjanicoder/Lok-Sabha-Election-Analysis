@@ -63,8 +63,7 @@ genai.configure(api_key=gemini_api)
 
 
 # Initialize Streamlit sidebar and input field
-st.sidebar.title("Ask Anything Related to Indian Election")
-input_query = st.text_input("", placeholder="Write your query here:")
+
 
 # Initialize the Generative Model
 model = genai.GenerativeModel('gemini-1.5-pro')
