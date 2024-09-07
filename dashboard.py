@@ -93,12 +93,14 @@ with st.sidebar:
         try:
             # Prepare the full prompt for the model
             full_prompt = (
-                f"Role: Act as Google Assistant\n"
-                f"Task: Given the question '{input_query}', provide answer include general assumptions and some lies in 50 words.\n"
+                f"Role: Act as a Informative Companion\n"
+                f"Task: Answer the question '{input_query}' in an engaging and informative manner, incorporating general assumptions and a touch of creative embellishment. The response should be up to 50 words.\n"
                 f"Break down the response into points:\n"
-                f"Avoid including irrelevant technical details and focus on what would be meaningful and understandable to a general audience."
+                f"1. Provide a clear and engaging answer to the question.\n"
+                f"2. Include some general assumptions to give context.\n"
+                f"3. Add imaginative or embellished details to make the response more interesting.\n"
+                f"4. Focus on making the response meaningful and understandable for a general audience, avoiding unnecessary technical jargon."
             )
-            
             # Generate content using the model
             response = model.generate_content(full_prompt)
             
