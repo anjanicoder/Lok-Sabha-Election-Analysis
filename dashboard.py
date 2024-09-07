@@ -56,20 +56,30 @@ st.markdown("<h1 class='gradient-text'>Lok Sabha Election Analysis</h1><br><br>"
 
 gemini_api_key = "AIzaSyAoH_9XUjI3qOpKGsOjZ4mqe6UwL2uak6c"
 
-st.sidebar.title("Ask Anything Related to indian Election")
-input1 = st.text_input("", placeholder="write your query here:-")
-model = genai.GenerativeModel('gemini-1.5-pro')
-full_prompt = (
+# Initialize Streamlit sidebar and input field
+st.sidebar.title("Ask Anything Related to Indian Election")
+input_query = st.text_input("", placeholder="Write your query here:")
+
+# Initialize the Generative Model
+model = genai.GenerativeModel('gemini-1.5-pro', api_key=gemini_api_key)
+
+# Check if the user has provided an input
+if input_query:
+    # Prepare the full prompt for the model
+    full_prompt = (
         f"Role: Act as an informed analyst.\n"
-        f"Task: Given the question '{prompt}', provide a detailed analysis based on general information and include general assumptions.in 50 words\n"
+        f"Task: Given the question '{input_query}', provide a detailed analysis based on general information and include general assumptions in 50 words.\n"
         f"Break down the response into:\n"
         f"- State-wise analysis\n"
         f"- Party-wise analysis\n"
         f"Avoid including irrelevant technical details and focus on what would be meaningful and understandable to a general audience."
     )
-response = model.generate_content(full_prompt)
-return response.text
-
+    
+    # Generate content using the model
+    response = model.generate_content(full_prompt)
+    
+    # Display the response
+    st.write(response.text)
 
 
 # uploaded_file = st.file_uploader("Upload your dataset here (CSV)",type="csv")
