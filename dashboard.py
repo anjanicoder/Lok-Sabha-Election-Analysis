@@ -701,9 +701,8 @@ with col2:
         'seats': [agg_data[agg_data['state'] == state]['seats'].sum() if state in agg_data['state'].values else 0 for state in state_names_geojson]
     })
 
-   
-
-    # Create the choropleth map
+       
+        # Create the choropleth map
     fig = go.Figure(data=go.Choropleth(
         geojson=geojson_data,
         featureidkey='properties.ST_NM',
@@ -728,14 +727,20 @@ with col2:
             tickfont=dict(color='white')    # Set color of the color bar ticks
         )
     ))
-
+    
     fig.update_geos(
         visible=False,
         projection=dict(type='mercator'),
         lonaxis={'range': [68, 98]},  # Longitude range for India
-        lataxis={'range': [6, 38]}    # Latitude range for India
+        lataxis={'range': [6, 38]},   # Latitude range for India
+        showland=True,
+        landcolor='white',
+        showcountries=True,
+        countrycolor='black',
+        showocean=True,
+        oceancolor='lightblue'
     )
-
+    
     fig.update_layout(
         title=dict(
             text=f"{selected_party} Seats In Lok Sabha Election",
@@ -747,12 +752,21 @@ with col2:
             pad={'b': 10}
         ),
         margin={'r': 0, 't': 30, 'l': 0, 'b': 0},
-        height=750,
+        height=900,
         width=750,  # Adjust width as needed
         template='plotly_dark',  # Apply dark theme
         paper_bgcolor='rgba(0,0,0,0)',  # Make the background transparent
         plot_bgcolor='rgba(0,0,0,0)',   # Make the plot background transparent
-        
+        geo=dict(
+            visible=False,  # Hide the geo axes
+            showcoastlines=False,
+            showland=False,
+            showocean=False,
+            showcountries=False,
+            showlakes=False
+        ),
+        dragmode=False,  # Disable dragging
+        uirevision='constant',  # Disable user interface revisions
     )
 
     # Display the map in Streamlit
