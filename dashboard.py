@@ -54,14 +54,20 @@ st.markdown("<h1 class='gradient-text'>Lok Sabha Election Analysis</h1><br><br>"
 
 
 
-gemini_api_key = "AIzaSyAoH_9XUjI3qOpKGsOjZ4mqe6UwL2uak6c"
+
+gemini_api = "AIzaSyAlzvQ_9dUdj5z-AUjsYOM5uHP-XPUvKAQ"  # Replace this with your actual key
+
+# Configure the Gemini model with the API key
+genai.configure(api_key=gemini_api)
+
+
 
 # Initialize Streamlit sidebar and input field
 st.sidebar.title("Ask Anything Related to Indian Election")
 input_query = st.text_input("", placeholder="Write your query here:")
 
 # Initialize the Generative Model
-model = genai.GenerativeModel('gemini-1.5-pro', api_key=gemini_api_key)
+model = genai.GenerativeModel('gemini-1.5-pro')
 
 # Check if the user has provided an input
 if input_query:
@@ -368,10 +374,6 @@ st.markdown("<br><br>", unsafe_allow_html=True)
 
 
 
-gemini_api = "AIzaSyAlzvQ_9dUdj5z-AUjsYOM5uHP-XPUvKAQ"  # Replace this with your actual key
-
-# Configure the Gemini model with the API key
-genai.configure(api_key=gemini_api)
 
 
 # Function to generate a dataframe-related response using Gemini
