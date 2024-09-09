@@ -207,7 +207,7 @@ with st.sidebar:
             st.write("Made with Gemini pro ")
 
 
-        st.write("<div>Developed by - <span style=\"color: cyan; font-size: 24px; font-weight: 600;\">Jaishree Yadav</span></div>",unsafe_allow_html=True)
+        # st.write("<div>Developed by - <span style=\"color: cyan; font-size: 24px; font-weight: 600;\">Jaishree Yadav</span></div>",unsafe_allow_html=True)
 
 
 # Define a function to format numbers
@@ -474,7 +474,7 @@ def get_image_as_base64(image_path):
 teacher_image_base64 = get_image_as_base64("teacher2.png")
 
 # Streamlit input boxes and image buttons
-st.title("Ask From AI")
+st.title("Knowledge Bot")
 
 # Create columns for inputs and buttons
 col1, col2 = st.columns(2)
@@ -483,28 +483,28 @@ col1, col2 = st.columns(2)
 with col1:
     input1 = st.text_input("Ask Queries related to Top Parties with Seats Won ✨", placeholder="Ask me about your data")
     # Display the teacher image as a clickable button
-    st.markdown(
-        f"""
-        <style>
-        .teacher-button {{
-            cursor: pointer;
-            display: inline-block;
-            margin: 0px;
-            position: relative;
-            left: -25px;  /* Move the button 5px to the right */
-        }}
-        .teacher-image {{
-            width: 150px;
-            height: 150px;
-            object-fit: contain;
-        }}
-        </style>
-        <div class="teacher-button" onclick="document.getElementById('analyze-button-1').click()">
-            <img src="data:image/png;base64,{teacher_image_base64}" class="teacher-image" alt="Click to analyze trends">
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+    # st.markdown(
+    #     f"""
+    #     <style>
+    #     .teacher-button {{
+    #         cursor: pointer;
+    #         display: inline-block;
+    #         margin: 0px;
+    #         position: relative;
+    #         left: -25px;  /* Move the button 5px to the right */
+    #     }}
+    #     .teacher-image {{
+    #         width: 150px;
+    #         height: 150px;
+    #         object-fit: contain;
+    #     }}
+    #     </style>
+    #     <div class="teacher-button" onclick="document.getElementById('analyze-button-1').click()">
+    #         <img src="data:image/png;base64,{teacher_image_base64}" class="teacher-image" alt="Click to analyze trends">
+    #     </div>
+    #     """,
+    #     unsafe_allow_html=True
+    # )
     # Handle Enter key press for generating responses
     if input1:
         initial_response = generateDataframeResponse(dataFrame=top_parties_df, prompt=input1)
@@ -521,28 +521,28 @@ with col1:
 with col2:
     input2 = st.text_input("Ask Queries related to Genderwise Voter Turnout ✨", placeholder="Write question here")
     # Display the teacher image as a clickable button
-    st.markdown(
-        f"""
-        <style>
-        .teacher-button {{
-            cursor: pointer;
-            display: inline-block;
-            margin: 0px;
-            position: relative;
-            left: -25px;  /* Move the button 5px to the right */
-        }}
-        .teacher-image {{
-            width: 150px;
-            height: 150px;
-            object-fit: contain;
-        }}
-        </style>
-        <div class="teacher-button" onclick="document.getElementById('analyze-button-2').click()">
-            <img src="data:image/png;base64,{teacher_image_base64}" class="teacher-image" alt="Click to analyze trends">
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+    # st.markdown(
+    #     f"""
+    #     <style>
+    #     .teacher-button {{
+    #         cursor: pointer;
+    #         display: inline-block;
+    #         margin: 0px;
+    #         position: relative;
+    #         left: -25px;  /* Move the button 5px to the right */
+    #     }}
+    #     .teacher-image {{
+    #         width: 150px;
+    #         height: 150px;
+    #         object-fit: contain;
+    #     }}
+    #     </style>
+    #     <div class="teacher-button" onclick="document.getElementById('analyze-button-2').click()">
+    #         <img src="data:image/png;base64,{teacher_image_base64}" class="teacher-image" alt="Click to analyze trends">
+    #     </div>
+    #     """,
+    #     unsafe_allow_html=True
+    # )
     if input2:
         answer = generateResponse(dataFrame=gender_ratio, prompt=input2)
         st.write(answer)
