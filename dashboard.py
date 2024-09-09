@@ -866,7 +866,7 @@ with col2:
     # Sort the dataframe in decreasing order of votes
     df = df.sort_values(by='Votes', ascending=False)
 
-    # Create a horizontal bar graph with the 'inferno' color palette
+    # Create a horizontal bar graph with the 'inferno' color palette and data labels
     fig = px.bar(
         df,
         y='Candidate_Name',  # Use 'y' for horizontal bars
@@ -875,35 +875,29 @@ with col2:
         color_continuous_scale='inferno',  # Use the inferno color palette
         title=f'Votes Distribution by Candidate for {constituency}',
         labels={'Votes': 'Number of Votes', 'Candidate_Name': 'Candidate'},
-        orientation='h'  # Set orientation to horizontal
+        orientation='h',
+        text_auto=True  # Automatically show data labels on bars
     )
-
-    # Customize the horizontal bar graph layout
+    
+    # Customize the horizontal bar graph layout (remove color axis and add data labels)
     fig.update_layout(
         plot_bgcolor='rgba(0,0,0,0)',
         paper_bgcolor='rgba(0,0,0,0)',
         title_font=dict(size=24, color='white', family="Arial"),
         font=dict(color='black', size=22, family="Arial"),
         margin=dict(l=150, r=10, t=70, b=50),  # Adjust margins for better readability
-        coloraxis_colorbar=dict(
-            orientation="h",
-            yanchor="top",
-            y=-0.3,
-            xanchor="center",
-            x=0.5,
-            tickfont=dict(color='white', size=16),
-            title=dict(text="Votes", side="bottom", font=dict(size=18, color="black"))
-        ),
+        coloraxis_showscale=False,  # Remove the color legend/scale
         yaxis=dict(
             autorange='reversed'  # Ensure that larger values are at the top
         )
     )
-
+    
     # Display only the top 2-3 bars initially
     top_n = 3
     top_df = df.head(top_n)  # Get the top N rows
-    top_df = top_df.sort_values(by='Votes',ascending = True)
-
+    top_df = top_df.sort_values(by='Votes', ascending=True)
+    
+    # Display the top candidates bar chart with data labels and no color legend
     st.write("### Top Candidates")
     st.plotly_chart(px.bar(
         top_df,
@@ -913,13 +907,15 @@ with col2:
         color_continuous_scale='inferno',
         title=f'Top {top_n} Candidates for {constituency}',
         labels={'Votes': 'Number of Votes', 'Candidate_Name': 'Candidate'},
-        orientation='h'
+        orientation='h',
+        text_auto=True  # Automatically show data labels on bars
     ).update_layout(
         plot_bgcolor='rgba(0,0,0,0)',
         paper_bgcolor='rgba(0,0,0,0)',
         title_font=dict(size=24, color='white', family="Arial"),
         font=dict(color='black', size=22, family="Arial"),
-        margin=dict(l=150, r=10, t=70, b=50)
+        margin=dict(l=150, r=10, t=70, b=50),
+        coloraxis_showscale=False  # Remove the color legend/scale
     ))
 
     # # Expandable section for remaining bars
