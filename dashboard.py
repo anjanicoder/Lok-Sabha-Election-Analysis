@@ -922,9 +922,9 @@ with col2:
         margin=dict(l=150, r=10, t=70, b=50)
     ))
 
-    # Expandable section for remaining bars
-    with st.expander("Show More"):
-        st.plotly_chart(fig)
+    # # Expandable section for remaining bars
+    # with st.expander("Show More"):
+    #     st.plotly_chart(fig)
 
 
 # Display the complete dashboard
