@@ -408,7 +408,7 @@ def generateDataframeResponse(dataFrame, prompt):
     model = genai.GenerativeModel('gemini-1.5-pro')
     full_prompt = (
         f"Role: Act as PANDAS AI Model.\n"
-        f"Task: Given the question '{prompt}', provide a response based on the data below.\n"
+        f"Task: Given the question '{prompt}', provide a clear ,concise response based on the data below ,in 70 words and write for further details click on analyze button\n"
         f"Dataframe summary: {df_summary}\n"
         f"Dont write these things - PANDAS AI model here"
     )
@@ -438,7 +438,7 @@ def generateResponse(dataFrame, prompt):
     model = genai.GenerativeModel('gemini-1.5-pro')
     full_prompt = (
         f"Role: Act as PANDAS AI Model.\n"
-        f"Task: Given the question '{prompt}', provide a response based on the data below.\n"
+        f"Task: Given the question '{prompt}', provide a response based on the data below.clear ,concise response based on the data below ,in 70 words and write for further details click on analyze button\n"
         f"Dataframe summary: {df_summary}\n"
         f"Don't include irrelevant technical details."
     )
@@ -866,7 +866,7 @@ with col2:
     # Sort the dataframe in decreasing order of votes
     df = df.sort_values(by='Votes', ascending=False)
 
-    # Create a horizontal bar graph with the 'inferno' color palette and data labels
+    # Create a horizontal bar graph with the 'inferno' color palette and custom data labels
     fig = px.bar(
         df,
         y='Candidate_Name',  # Use 'y' for horizontal bars
@@ -876,10 +876,16 @@ with col2:
         title=f'Votes Distribution by Candidate for {constituency}',
         labels={'Votes': 'Number of Votes', 'Candidate_Name': 'Candidate'},
         orientation='h',
-        text_auto=True  # Automatically show data labels on bars
+        text='Votes'  # Use the 'Votes' column for the text labels
     )
     
-    # Customize the horizontal bar graph layout (remove color axis and add data labels)
+    # Customize the layout, including data labels and positioning outside the bars
+    fig.update_traces(
+        texttemplate='%{x:.2f}',  # Show 'Votes' with 2 decimal places
+        textposition='outside'  # Position the text labels outside the bars
+    )
+    
+    # Customize the overall graph layout (remove color axis and add data labels)
     fig.update_layout(
         plot_bgcolor='rgba(0,0,0,0)',
         paper_bgcolor='rgba(0,0,0,0)',
@@ -908,7 +914,10 @@ with col2:
         title=f'Top {top_n} Candidates for {constituency}',
         labels={'Votes': 'Number of Votes', 'Candidate_Name': 'Candidate'},
         orientation='h',
-        text_auto=True  # Automatically show data labels on bars
+        text='Votes'  # Use the 'Votes' column for the text labels
+    ).update_traces(
+        texttemplate='%{x:.2f}',  # Show 'Votes' with 2 decimal places
+        textposition='outside'  # Position the text labels outside the bars
     ).update_layout(
         plot_bgcolor='rgba(0,0,0,0)',
         paper_bgcolor='rgba(0,0,0,0)',
