@@ -901,11 +901,10 @@ with col2:
     # Display only the top 2-3 bars initially
     top_n = 3
     top_df = df.head(top_n)  # Get the top N rows
-    top_df = top_df.sort_values(by='Votes', ascending=True)
-    
-    # Display the top candidates bar chart with data labels and no color legend
+    top_df = top_df.sort_values(by='Votes',ascending = True)
+
     st.write("### Top Candidates")
-    top_fig = px.bar(
+    st.plotly_chart(px.bar(
         top_df,
         y='Candidate_Name',  # Use 'y' for horizontal bars
         x='Votes',
@@ -913,25 +912,18 @@ with col2:
         color_continuous_scale='inferno',
         title=f'Top {top_n} Candidates for {constituency}',
         labels={'Votes': 'Number of Votes', 'Candidate_Name': 'Candidate'},
-        orientation='h',
-        text='Votes'  # Use the 'Votes' column for the text labels
-    )
-    
-    # Customize the data label format and position outside the bars
-    top_fig.update_traces(
-        texttemplate='%{x:.2f}',  # Show 'Votes' with 2 decimal places
-        textposition='outside'  # Position the text labels outside the bars
-    )
-    
-    # Customize the layout to match the original style
-    top_fig.update_layout(
+        orientation='h'
+    ).update_layout(
         plot_bgcolor='rgba(0,0,0,0)',
         paper_bgcolor='rgba(0,0,0,0)',
         title_font=dict(size=24, color='white', family="Arial"),
         font=dict(color='black', size=22, family="Arial"),
-        margin=dict(l=150, r=10, t=70, b=50),
-        coloraxis_showscale=False  # Remove the color legend/scale
-    )
+        margin=dict(l=150, r=10, t=70, b=50)
+    ))
+
+    # Expandable section for remaining bars
+    with st.expander("Show More"):
+        st.plotly_chart(fig)
 
     # # Expandable section for remaining bars
     # with st.expander("Show More"):
