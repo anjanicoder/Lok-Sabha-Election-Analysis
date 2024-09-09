@@ -474,7 +474,7 @@ def get_image_as_base64(image_path):
 teacher_image_base64 = get_image_as_base64("teacher2.png")
 
 # Streamlit input boxes and image buttons
-st.title("Knowledge Bot")
+st.title("Ask Gyan")
 
 # Create columns for inputs and buttons
 col1, col2 = st.columns(2)
@@ -897,7 +897,7 @@ with col2:
             autorange='reversed'  # Ensure that larger values are at the top
         )
     )
-    
+
     # Display only the top 2-3 bars initially
     top_n = 3
     top_df = df.head(top_n)  # Get the top N rows
@@ -905,7 +905,7 @@ with col2:
     
     # Display the top candidates bar chart with data labels and no color legend
     st.write("### Top Candidates")
-    st.plotly_chart(px.bar(
+    top_fig = px.bar(
         top_df,
         y='Candidate_Name',  # Use 'y' for horizontal bars
         x='Votes',
@@ -915,17 +915,23 @@ with col2:
         labels={'Votes': 'Number of Votes', 'Candidate_Name': 'Candidate'},
         orientation='h',
         text='Votes'  # Use the 'Votes' column for the text labels
-    ).update_traces(
+    )
+    
+    # Customize the data label format and position outside the bars
+    top_fig.update_traces(
         texttemplate='%{x:.2f}',  # Show 'Votes' with 2 decimal places
         textposition='outside'  # Position the text labels outside the bars
-    ).update_layout(
+    )
+    
+    # Customize the layout to match the original style
+    top_fig.update_layout(
         plot_bgcolor='rgba(0,0,0,0)',
         paper_bgcolor='rgba(0,0,0,0)',
         title_font=dict(size=24, color='white', family="Arial"),
         font=dict(color='black', size=22, family="Arial"),
         margin=dict(l=150, r=10, t=70, b=50),
         coloraxis_showscale=False  # Remove the color legend/scale
-    ))
+    )
 
     # # Expandable section for remaining bars
     # with st.expander("Show More"):
