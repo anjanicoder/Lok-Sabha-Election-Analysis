@@ -925,8 +925,8 @@ with col2:
         st.plotly_chart(fig)
 
     # Expandable section for remaining bars
-    with st.expander("Show More"):
-        st.plotly_chart(fig)
+    # with st.expander("Show More"):
+    #     st.plotly_chart(fig)
 
 
 # Display the complete dashboard
