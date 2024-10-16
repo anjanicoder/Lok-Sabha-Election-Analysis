@@ -84,7 +84,7 @@ platformdirs
 plotly
 prompt_toolkit
 proto-plus
-protobuf
+protobuf==3.20.*
 psutil
 pure_eval
 pyarrow
