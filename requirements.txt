@@ -3,12 +3,10 @@ plotly
 sqlalchemy
 seaborn
 geopandas
-jsonlib  # If you're using JSON functionalities
 folium
 streamlit_folium
 requests
 streamlit
 pandas
 google-generativeai
-Pillow  # For working with images
-base64  # Standard library, no need to specify
+Pillow
