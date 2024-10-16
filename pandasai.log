@@ -772,3 +772,156 @@ result = {'type': 'string', 'value': f'The highest female turnout was {highest_f
 2024-09-06 05:56:56 [INFO] Executing Step 7: ResultValidation
 2024-09-06 05:56:56 [INFO] Answer: {'type': 'string', 'value': 'The highest female turnout was 67.18% in the year 2019.'}
 2024-09-06 05:56:56 [INFO] Executing Step 8: ResultParsing
+2024-10-16 12:44:59 [INFO] Question: 
+2024-10-16 12:45:00 [INFO] Running PandasAI with google-gemini LLM...
+2024-10-16 12:45:00 [INFO] Prompt ID: 56d2de46-e0c1-4e2a-a6e2-619b7195950c
+2024-10-16 12:45:00 [INFO] Executing Pipeline: GenerateChatPipeline
+2024-10-16 12:45:00 [INFO] Executing Step 0: ValidatePipelineInput
+2024-10-16 12:45:00 [INFO] Executing Step 1: CacheLookup
+2024-10-16 12:45:00 [INFO] Using cached response
+2024-10-16 12:45:00 [INFO] Executing Step 2: PromptGeneration
+2024-10-16 12:45:00 [INFO] Executing Step 2: Skipping...
+2024-10-16 12:45:00 [INFO] Executing Step 3: CodeGenerator
+2024-10-16 12:45:00 [INFO] Executing Step 3: Skipping...
+2024-10-16 12:45:00 [INFO] Executing Step 4: CachePopulation
+2024-10-16 12:45:00 [INFO] Executing Step 4: Skipping...
+2024-10-16 12:45:00 [INFO] Executing Step 5: CodeCleaning
+2024-10-16 12:45:00 [INFO] 
+Code running:
+```
+highest_votes = dfs[0]['Votes'].max()
+winning_party = dfs[0][dfs[0]['Votes'] == highest_votes]['Party'].values[0]
+result = {'type': 'string', 'value': f'The winning party is {winning_party} with {highest_votes} votes.'}
+        ```
+2024-10-16 12:45:00 [INFO] Executing Step 6: CodeExecution
+2024-10-16 12:45:00 [INFO] Executing Step 7: ResultValidation
+2024-10-16 12:45:00 [INFO] Answer: {'type': 'string', 'value': 'The winning party is Bharatiya Janta Party with 240 votes.'}
+2024-10-16 12:45:00 [INFO] Executing Step 8: ResultParsing
+2024-10-16 12:45:00 [INFO] Question: 
+2024-10-16 12:45:00 [INFO] Running PandasAI with google-gemini LLM...
+2024-10-16 12:45:00 [INFO] Prompt ID: da5c5158-f550-450a-b7ae-c48eb245de55
+2024-10-16 12:45:00 [INFO] Executing Pipeline: GenerateChatPipeline
+2024-10-16 12:45:00 [INFO] Executing Step 0: ValidatePipelineInput
+2024-10-16 12:45:00 [INFO] Executing Step 1: CacheLookup
+2024-10-16 12:45:00 [INFO] Using cached response
+2024-10-16 12:45:00 [INFO] Executing Step 2: PromptGeneration
+2024-10-16 12:45:00 [INFO] Executing Step 2: Skipping...
+2024-10-16 12:45:00 [INFO] Executing Step 3: CodeGenerator
+2024-10-16 12:45:00 [INFO] Executing Step 3: Skipping...
+2024-10-16 12:45:00 [INFO] Executing Step 4: CachePopulation
+2024-10-16 12:45:00 [INFO] Executing Step 4: Skipping...
+2024-10-16 12:45:00 [INFO] Executing Step 5: CodeCleaning
+2024-10-16 12:45:00 [INFO] 
+Code running:
+```
+dfs[0].sort_values(by='Female_Turnout', ascending=False, inplace=True)
+highest_female_turnout = dfs[0]['Female_Turnout'].iloc[0]
+highest_female_turnout_year = dfs[0]['Year'].iloc[0]
+result = {'type': 'string', 'value': f'The highest female turnout was {highest_female_turnout}% in the year {highest_female_turnout_year}.'}
+        ```
+2024-10-16 12:45:00 [INFO] Executing Step 6: CodeExecution
+2024-10-16 12:45:00 [INFO] Executing Step 7: ResultValidation
+2024-10-16 12:45:00 [INFO] Answer: {'type': 'string', 'value': 'The highest female turnout was 67.18% in the year 2019.'}
+2024-10-16 12:45:00 [INFO] Executing Step 8: ResultParsing
+2024-10-16 12:45:38 [INFO] Question: 
+2024-10-16 12:45:38 [INFO] Running PandasAI with google-gemini LLM...
+2024-10-16 12:45:38 [INFO] Prompt ID: 0441289a-a8a3-4dc7-894c-aec48723fa98
+2024-10-16 12:45:38 [INFO] Executing Pipeline: GenerateChatPipeline
+2024-10-16 12:45:38 [INFO] Executing Step 0: ValidatePipelineInput
+2024-10-16 12:45:38 [INFO] Executing Step 1: CacheLookup
+2024-10-16 12:45:38 [INFO] Using cached response
+2024-10-16 12:45:38 [INFO] Executing Step 2: PromptGeneration
+2024-10-16 12:45:38 [INFO] Executing Step 2: Skipping...
+2024-10-16 12:45:38 [INFO] Executing Step 3: CodeGenerator
+2024-10-16 12:45:38 [INFO] Executing Step 3: Skipping...
+2024-10-16 12:45:38 [INFO] Executing Step 4: CachePopulation
+2024-10-16 12:45:38 [INFO] Executing Step 4: Skipping...
+2024-10-16 12:45:38 [INFO] Executing Step 5: CodeCleaning
+2024-10-16 12:45:38 [INFO] 
+Code running:
+```
+highest_votes = dfs[0]['Votes'].max()
+winning_party = dfs[0][dfs[0]['Votes'] == highest_votes]['Party'].values[0]
+result = {'type': 'string', 'value': f'The winning party is {winning_party} with {highest_votes} votes.'}
+        ```
+2024-10-16 12:45:38 [INFO] Executing Step 6: CodeExecution
+2024-10-16 12:45:38 [INFO] Executing Step 7: ResultValidation
+2024-10-16 12:45:38 [INFO] Answer: {'type': 'string', 'value': 'The winning party is Bharatiya Janta Party with 240 votes.'}
+2024-10-16 12:45:38 [INFO] Executing Step 8: ResultParsing
+2024-10-16 12:45:38 [INFO] Question: 
+2024-10-16 12:45:38 [INFO] Running PandasAI with google-gemini LLM...
+2024-10-16 12:45:38 [INFO] Prompt ID: 53df9eb8-1b37-4fd6-b4e8-c1b955f17f9b
+2024-10-16 12:45:38 [INFO] Executing Pipeline: GenerateChatPipeline
+2024-10-16 12:45:38 [INFO] Executing Step 0: ValidatePipelineInput
+2024-10-16 12:45:38 [INFO] Executing Step 1: CacheLookup
+2024-10-16 12:45:38 [INFO] Using cached response
+2024-10-16 12:45:38 [INFO] Executing Step 2: PromptGeneration
+2024-10-16 12:45:38 [INFO] Executing Step 2: Skipping...
+2024-10-16 12:45:38 [INFO] Executing Step 3: CodeGenerator
+2024-10-16 12:45:38 [INFO] Executing Step 3: Skipping...
+2024-10-16 12:45:38 [INFO] Executing Step 4: CachePopulation
+2024-10-16 12:45:38 [INFO] Executing Step 4: Skipping...
+2024-10-16 12:45:38 [INFO] Executing Step 5: CodeCleaning
+2024-10-16 12:45:38 [INFO] 
+Code running:
+```
+dfs[0].sort_values(by='Female_Turnout', ascending=False, inplace=True)
+highest_female_turnout = dfs[0]['Female_Turnout'].iloc[0]
+highest_female_turnout_year = dfs[0]['Year'].iloc[0]
+result = {'type': 'string', 'value': f'The highest female turnout was {highest_female_turnout}% in the year {highest_female_turnout_year}.'}
+        ```
+2024-10-16 12:45:38 [INFO] Executing Step 6: CodeExecution
+2024-10-16 12:45:38 [INFO] Executing Step 7: ResultValidation
+2024-10-16 12:45:38 [INFO] Answer: {'type': 'string', 'value': 'The highest female turnout was 67.18% in the year 2019.'}
+2024-10-16 12:45:38 [INFO] Executing Step 8: ResultParsing
+2024-10-16 13:43:36 [INFO] Question: 
+2024-10-16 13:43:36 [INFO] Running PandasAI with google-gemini LLM...
+2024-10-16 13:43:36 [INFO] Prompt ID: 8348dd23-3ddb-4c75-9abc-feb243ad533d
+2024-10-16 13:43:36 [INFO] Executing Pipeline: GenerateChatPipeline
+2024-10-16 13:43:36 [INFO] Executing Step 0: ValidatePipelineInput
+2024-10-16 13:43:36 [INFO] Executing Step 1: CacheLookup
+2024-10-16 13:43:36 [INFO] Using cached response
+2024-10-16 13:43:36 [INFO] Executing Step 2: PromptGeneration
+2024-10-16 13:43:36 [INFO] Executing Step 2: Skipping...
+2024-10-16 13:43:36 [INFO] Executing Step 3: CodeGenerator
+2024-10-16 13:43:36 [INFO] Executing Step 3: Skipping...
+2024-10-16 13:43:36 [INFO] Executing Step 4: CachePopulation
+2024-10-16 13:43:36 [INFO] Executing Step 4: Skipping...
+2024-10-16 13:43:36 [INFO] Executing Step 5: CodeCleaning
+2024-10-16 13:43:36 [INFO] 
+Code running:
+```
+highest_votes = dfs[0]['Votes'].max()
+winning_party = dfs[0][dfs[0]['Votes'] == highest_votes]['Party'].values[0]
+result = {'type': 'string', 'value': f'The winning party is {winning_party} with {highest_votes} votes.'}
+        ```
+2024-10-16 13:43:36 [INFO] Executing Step 6: CodeExecution
+2024-10-16 13:43:36 [INFO] Executing Step 7: ResultValidation
+2024-10-16 13:43:36 [INFO] Answer: {'type': 'string', 'value': 'The winning party is Bharatiya Janta Party with 240 votes.'}
+2024-10-16 13:43:36 [INFO] Executing Step 8: ResultParsing
+2024-10-16 13:43:36 [INFO] Question: 
+2024-10-16 13:43:36 [INFO] Running PandasAI with google-gemini LLM...
+2024-10-16 13:43:36 [INFO] Prompt ID: ee3b5d5d-0c3e-4ed5-840d-3d698266cb38
+2024-10-16 13:43:36 [INFO] Executing Pipeline: GenerateChatPipeline
+2024-10-16 13:43:36 [INFO] Executing Step 0: ValidatePipelineInput
+2024-10-16 13:43:36 [INFO] Executing Step 1: CacheLookup
+2024-10-16 13:43:36 [INFO] Using cached response
+2024-10-16 13:43:36 [INFO] Executing Step 2: PromptGeneration
+2024-10-16 13:43:36 [INFO] Executing Step 2: Skipping...
+2024-10-16 13:43:36 [INFO] Executing Step 3: CodeGenerator
+2024-10-16 13:43:36 [INFO] Executing Step 3: Skipping...
+2024-10-16 13:43:36 [INFO] Executing Step 4: CachePopulation
+2024-10-16 13:43:36 [INFO] Executing Step 4: Skipping...
+2024-10-16 13:43:36 [INFO] Executing Step 5: CodeCleaning
+2024-10-16 13:43:36 [INFO] 
+Code running:
+```
+dfs[0].sort_values(by='Female_Turnout', ascending=False, inplace=True)
+highest_female_turnout = dfs[0]['Female_Turnout'].iloc[0]
+highest_female_turnout_year = dfs[0]['Year'].iloc[0]
+result = {'type': 'string', 'value': f'The highest female turnout was {highest_female_turnout}% in the year {highest_female_turnout_year}.'}
+        ```
+2024-10-16 13:43:36 [INFO] Executing Step 6: CodeExecution
+2024-10-16 13:43:36 [INFO] Executing Step 7: ResultValidation
+2024-10-16 13:43:36 [INFO] Answer: {'type': 'string', 'value': 'The highest female turnout was 67.18% in the year 2019.'}
+2024-10-16 13:43:36 [INFO] Executing Step 8: ResultParsing
