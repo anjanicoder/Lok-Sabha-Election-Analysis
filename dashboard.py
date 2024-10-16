@@ -1,7 +1,6 @@
 
 import matplotlib.pyplot as plt
 import plotly.express as px
-import sqlalchemy
 import plotly.graph_objects as go
 import seaborn as sns
 import geopandas as gpd
@@ -129,32 +128,32 @@ with st.sidebar:
 
 
 # Database connection parameters
-username = 'root'
-password = 'test'
-host = '127.0.0.1'
-port = '3306'
-database = 'Loksabha'
+# username = 'root'
+# password = 'test'
+# host = '127.0.0.1'
+# port = '3306'
+# database = 'Loksabha'
 
-# Create the SQLAlchemy engine
-engine = sqlalchemy.create_engine(f'mysql+pymysql://{username}:{password}@{host}:{port}/{database}')
+# # Create the SQLAlchemy engine
+# engine = sqlalchemy.create_engine(f'mysql+pymysql://{username}:{password}@{host}:{port}/{database}')
 
 
 
 # Assuming 'engine' is your SQLAlchemy engine
 
 
-query = "SELECT * FROM constituency"
+# query = "SELECT * FROM constituency"
 # df1 = pd.read_sql(query, engine)
 df1 = pd.read_csv('constituency.csv')
 
 
 
-query = "select * FROM candidates"
+# query = "select * FROM candidates"
 # df2 = pd.read_sql(query, engine)
 df2 = pd.read_csv('Candidates.csv')
 
 
-query = "SELECT * FROM election"
+# query = "SELECT * FROM election"
 # df3 = pd.read_sql(query, engine)
 df3 = pd.read_csv('Election.csv')
 
