@@ -1,4 +1,4 @@
-
+altair
 annotated-types
 anyio
 astor
@@ -84,7 +84,7 @@ platformdirs
 plotly
 prompt_toolkit
 proto-plus
-protobuf==3.20.*
+protobuf
 psutil
 pure_eval
 pyarrow
