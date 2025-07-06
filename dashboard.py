@@ -704,32 +704,57 @@ with col2:
         'seats': [agg_data[agg_data['state'] == state]['seats'].sum() if state in agg_data['state'].values else 0 for state in state_names_geojson]
     })
 
-       
-        # Create the choropleth map
-    fig = go.Figure(data=go.Choropleth(
-        geojson=geojson_data,
-        featureidkey='properties.ST_NM',
-        locationmode='geojson-id',
-        locations=agg_data['state'],
-        z=agg_data['seats'],
-        autocolorscale=False,
-        colorscale='Reds',  # Color scale for the dark theme
-        marker_line_color='peachpuff',  # Outline color for states
-        colorbar=dict(
-            title={'text': "Seats"},
-            thickness=15,
-            len=0.3,
-            bgcolor='#0E1117',  # Dark background for the color bar
-            tick0=0,
-            dtick=5,  # Adjust based on your data range
-            xanchor='right',  # Anchor the colorbar to the right side
-            x=1.0,  # Position colorbar at the far right
-            yanchor='middle',  # Anchor the colorbar to the middle vertically
-            y=0.4,  # Position colorbar in the middle vertically
-            titlefont=dict(color='white'),  # Set color of the color bar title
-            tickfont=dict(color='white')    # Set color of the color bar ticks
-        )
-    ))
+     fig = go.Figure(data=go.Choropleth(
+    geojson=geojson_data,
+    featureidkey='properties.ST_NM',
+    locationmode='geojson-id',
+    locations=agg_data['state'],
+    z=agg_data['seats'],
+    autocolorscale=False,
+    colorscale='Reds',
+    marker_line_color='peachpuff',
+    colorbar=dict(
+        title=dict(text="Seats", font=dict(color='white')),
+        thickness=15,
+        len=0.3,
+        bgcolor='#0E1117',
+        tick0=0,
+        dtick=5,
+        xanchor='right',
+        x=1.0,
+        yanchor='middle',
+        y=0.4,
+        tickfont=dict(color='white')
+    )
+))
+  
+   # Create the choropleth map
+# fig = go.Figure(data=go.Choropleth(
+#     geojson=geojson_data,
+#     featureidkey='properties.ST_NM',
+#     locationmode='geojson-id',
+#     locations=agg_data['state'],
+#     z=agg_data['seats'],
+#     autocolorscale=False,
+#     colorscale='Reds',  # Color scale for the dark theme
+#     marker_line_color='peachpuff',  # Outline color for states
+#     colorbar=dict(
+#         title={'text': "Seats"},
+#         thickness=15,
+#         len=0.3,
+#         bgcolor='#0E1117',  # Dark background for the color bar
+#         tick0=0,
+#         dtick=5,  # Adjust based on your data range
+#         xanchor='right',  # Anchor the colorbar to the right side
+#         x=1.0,  # Position colorbar at the far right
+#         yanchor='middle',  # Anchor the colorbar to the middle vertically
+#         y=0.4,  # Position colorbar in the middle vertically
+#         titlefont=dict(color='white'),  # Set color of the color bar title
+#         tickfont=dict(color='white')    # Set color of the color bar ticks
+#     )
+# ))
+
+
     
     fig.update_geos(
         visible=False,
