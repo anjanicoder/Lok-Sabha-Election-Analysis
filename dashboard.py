@@ -704,7 +704,9 @@ with col2:
         'seats': [agg_data[agg_data['state'] == state]['seats'].sum() if state in agg_data['state'].values else 0 for state in state_names_geojson]
     })
 
-     fig = go.Figure(data=go.Choropleth(
+    
+
+fig = go.Figure(data=go.Choropleth(
     geojson=geojson_data,
     featureidkey='properties.ST_NM',
     locationmode='geojson-id',
@@ -714,7 +716,7 @@ with col2:
     colorscale='Reds',
     marker_line_color='peachpuff',
     colorbar=dict(
-        title=dict(text="Seats", font=dict(color='white')),
+        title=dict(text="Seats", font=dict(color='white')),  # FIXED
         thickness=15,
         len=0.3,
         bgcolor='#0E1117',
@@ -724,9 +726,11 @@ with col2:
         x=1.0,
         yanchor='middle',
         y=0.4,
-        tickfont=dict(color='white')
+        tickfont=dict(color='white')  # Valid
     )
 ))
+
+
   
    # Create the choropleth map
 # fig = go.Figure(data=go.Choropleth(
