@@ -706,16 +706,16 @@ with col2:
 
     
 
-fig = go.Figure(data=go.Choropleth(
-    geojson=geojson_data,
-    featureidkey='properties.ST_NM',
-    locationmode='geojson-id',
-    locations=agg_data['state'],
-    z=agg_data['seats'],
-    autocolorscale=False,
-    colorscale='Reds',
-    marker_line_color='peachpuff',
-    colorbar=dict(
+    fig = go.Figure(data=go.Choropleth(
+         geojson=geojson_data,
+         featureidkey='properties.ST_NM',
+         locationmode='geojson-id',
+         locations=agg_data['state'],
+         z=agg_data['seats'],
+         autocolorscale=False,
+         colorscale='Reds',
+         marker_line_color='peachpuff',
+         colorbar=dict(
         title=dict(text="Seats", font=dict(color='white')),  # FIXED
         thickness=15,
         len=0.3,
@@ -728,7 +728,7 @@ fig = go.Figure(data=go.Choropleth(
         y=0.4,
         tickfont=dict(color='white')  # Valid
     )
-))
+    ))
 
 
   
